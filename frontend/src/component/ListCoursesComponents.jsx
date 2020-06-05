@@ -52,6 +52,7 @@ class ListCoursesComponents extends Component {
 
 
     deleteCourseClicked(id) {
+        if (window.confirm("Are you sure you want to delete this course?")) {
         CourseDataService.deleteCourse(id)
             .then(
                 response => {
@@ -59,61 +60,61 @@ class ListCoursesComponents extends Component {
                     this.refreshCourses()
                 }
             )
-
     }
-    updateCourseClicked(id) {
-        this.props.history.push(`/courses/${id}`)
-    }
+}
+updateCourseClicked(id) {
+    this.props.history.push(`/courses/${id}`)
+}
 
-    addCourseClicked() {
-        this.props.history.push("/courses/-1")
-    }
-    render() {
+addCourseClicked() {
+    this.props.history.push("/courses/-1")
+}
+render() {
 
-        return (
+    return (
+        <div className="container">
+            <h3>All Courses</h3>
+            {this.state.message && <div class='alert alert-success'>{this.state.message}</div>}
             <div className="container">
-                <h3>All Courses</h3>
-                {this.state.message && <div class='alert alert-success'>{this.state.message}</div>}
                 <div className="container">
-                    <div className="container">
-                        <label>Filter By: Instructor</label>
-                        <select name="instructor" className="form-control" onChange={this.refreshCoursesByLecturer}>
-                            <option value="">---</option>
-                            {this.state.instructors.map(i =>
-                                <option key={i.id} value={i.userName}>{i.name}</option>)}
-                        </select>
-                    </div>
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Description</th>
-                                <th>Instructor</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                this.state.courses.map(course =>
-                                    <tr key={course.id}>
-                                        <td>{course.id}</td>
-                                        <td>{course.description}</td>
-                                        <td>{course.instructor.name}</td>
-                                        <td><button className="btn btn-success" onClick={() => this.updateCourseClicked(course.id)}>Update</button></td>
-                                        <td><button className="btn btn-warning" onClick={() => this.deleteCourseClicked(course.id)}>Delete</button></td>
-                                    </tr>
-                                )
-                            }
-                        </tbody>
-                    </table>
+                    <label>Filter By: Instructor</label>
+                    <select name="instructor" className="form-control" onChange={this.refreshCoursesByLecturer}>
+                        <option value="">---</option>
+                        {this.state.instructors.map(i =>
+                            <option key={i.id} value={i.userName}>{i.name}</option>)}
+                    </select>
                 </div>
-                <div className="row">
-                    <button className="btn btn-success" onClick={this.addCourseClicked}>Add</button>
-                </div>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Description</th>
+                            <th>Instructor</th>
+                            <th>Update</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.state.courses.map(course =>
+                                <tr key={course.id}>
+                                    <td>{course.id}</td>
+                                    <td>{course.description}</td>
+                                    <td>{course.instructor.name}</td>
+                                    <td><button className="btn btn-success" onClick={() => this.updateCourseClicked(course.id)}>Update</button></td>
+                                    <td><button className="btn btn-warning" onClick={() => this.deleteCourseClicked(course.id)}>Delete</button></td>
+                                </tr>
+                            )
+                        }
+                    </tbody>
+                </table>
             </div>
-        )
-    }
+            <div className="row">
+                <button className="btn btn-success" onClick={this.addCourseClicked}>Add</button>
+            </div>
+        </div>
+    )
+}
 }
 
 export default ListCoursesComponents
