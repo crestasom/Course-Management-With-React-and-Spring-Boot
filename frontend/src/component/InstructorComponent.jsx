@@ -5,6 +5,7 @@ class InstructorComponent extends Component {
     constructor(props) {
         super(props)
         this.save=this.save.bind(this)
+        this.validate=this.validate.bind(this)
 
         this.state = {
             id: "",
@@ -43,12 +44,13 @@ class InstructorComponent extends Component {
                     <Formik
                     initialValues={{id,userName,name}}
                         onSubmit={this.save}
+                        enableReinitialize={true}
                         validate={this.validate}
                         validateOnBlur={false}
                         validateOnChange={false}
                     >
                         {
-                            (props) => (
+                            () => (
                                 <Form>
                                     <ErrorMessage name='description' component='div' className='alert alert-warning' />
                                     <fieldset className="form-group">
