@@ -8,6 +8,7 @@ class ListCoursesComponents extends Component {
         this.deleteCourseClicked = this.deleteCourseClicked.bind(this)
         this.updateCourseClicked = this.updateCourseClicked.bind(this)
         this.addCourseClicked = this.addCourseClicked.bind(this)
+        this.addInstructorClicked=this.addInstructorClicked.bind(this)
         this.refreshCoursesByLecturer = this.refreshCoursesByLecturer.bind(this)
 
         this.state = {
@@ -69,6 +70,9 @@ updateCourseClicked(id) {
 addCourseClicked() {
     this.props.history.push("/courses/-1")
 }
+addInstructorClicked(){
+    this.props.history.push("/instructor/add")
+}
 render() {
 
     return (
@@ -110,7 +114,8 @@ render() {
                 </table>
             </div>
             <div className="row">
-                <button className="btn btn-success" onClick={this.addCourseClicked}>Add</button>
+                <button className="btn btn-success" onClick={this.addCourseClicked}>Add Course</button> <br/>
+                <button className="btn btn-success" onClick={this.addInstructorClicked}>Add Instructor</button>
             </div>
         </div>
     )

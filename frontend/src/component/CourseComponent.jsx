@@ -77,7 +77,7 @@ class CourseComponent extends Component {
         id = id === '-1' ? "" : id
         return (
             <div>
-                <h3>Course</h3>
+                <h3>Add New Course</h3>
                 <div className="container">
                     <Formik
                         initialValues={{ id, description, instructor }}

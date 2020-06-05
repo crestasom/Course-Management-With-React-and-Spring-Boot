@@ -21,7 +21,6 @@ class CourseDataService {
     }
 
     createCourse(userName, course) {
-        console.log(`${INSTRUCTOR_API_URL}/${userName}/courses`)
         return axios.post(`${INSTRUCTOR_API_URL}/${userName}/courses`, course)
     }
     updateCourse(userName, id, course) {
