@@ -22,24 +22,28 @@ class CourseComponent extends Component {
     componentDidMount() {
 
         // eslint-disable-next-line
-        if (this.state.id == -1) {
+        CourseDataService.getInstructors().then(
+            response => {
+                this.setState({
+                    instructors: response.data,
+                    instructor: response.data[0].userName
+                })
+            }
+
+        )
+        if (this.state.id === "-1") {
             return
         }
 
         CourseDataService.getCourse(this.state.id)
-            .then(response =>
-
+            .then(response => {
                 this.setState({
                     description: response.data.description,
                     instructor: response.data.instructor.userName
-                }))
+                })
+            })
 
-        console.log(this.state.instructor)
-        CourseDataService.getInstructors().then(
-            response => {
-                this.setState({ instructors: response.data })
-            }
-        )
+
     }
 
     onSubmit(values) {
@@ -50,11 +54,11 @@ class CourseComponent extends Component {
             description: values.description,
             targetDate: values.targetDate
         }
-        if (this.state.id === -1) {
-            CourseDataService.createCourse(username, course).then(() => this.props.history.push('/courses'))
-        } else {
-            CourseDataService.updateCourse(username, this.state.id, course).then(() => this.props.history.push('/courses'))
-        }
+        //if (this.state.id === -1) {
+        CourseDataService.createCourse(username, course).then(() => this.props.history.push('/courses'))
+        //  } else {
+        //     CourseDataService.updateCourse(username, this.state.id, course).then(() => this.props.history.push('/courses'))
+        // }
     }
 
     validate(values) {
@@ -70,7 +74,7 @@ class CourseComponent extends Component {
     render() {
 
         let { description, id, instructor, instructors } = this.state
-
+        id = id === '-1' ? "" : id
         return (
             <div>
                 <h3>Course</h3>
@@ -88,8 +92,7 @@ class CourseComponent extends Component {
                                 <Form>
                                     <ErrorMessage name='description' component='div' className='alert alert-warning' />
                                     <fieldset className="form-group">
-                                        <label>Id</label>
-                                        <Field className="form-control" type="text" name="id" disabled />
+                                        <Field className="form-control" type="hidden" name="id" />
                                     </fieldset>
                                     <fieldset className="form-group">
                                         <label>Description</label>
