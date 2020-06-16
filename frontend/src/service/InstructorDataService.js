@@ -1,10 +1,14 @@
 import axios from "axios"
-const INSTRUCTOR_API_URL='http://localhost:8080'
-class InstructorDataService{
+import { authHeader } from '../helpers'
+const INSTRUCTOR_API_URL = 'http://localhost:8080'
+class InstructorDataService {
 
-    saveInstructor(instructor){
-        console.log("saving"+instructor.name)
-        return axios.post(`${INSTRUCTOR_API_URL}/instructor/save`,instructor)
+    saveInstructor(instructor) {
+        const requestOptions = {
+            method: 'GET',
+            headers: authHeader()
+        };
+        return axios.post(`${INSTRUCTOR_API_URL}/instructor/save`, instructor, requestOptions)
     }
 }
 export default new InstructorDataService()

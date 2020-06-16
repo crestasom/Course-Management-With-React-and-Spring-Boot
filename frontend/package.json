@@ -8,10 +8,17 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "formik": "^2.1.4",
+    "history": "^5.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-storage": "^4.1.2",
+    "redux-storage-engine-localstorage": "^1.1.4",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^5.1.1"
   },
   "scripts": {
