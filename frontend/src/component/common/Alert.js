@@ -4,14 +4,18 @@ import { connect } from 'react-redux';
 import { clearMsg } from '../../actions/alertAction'
 import React, { Component } from 'react'
 import FlashMessage from 'react-flash-message'
+import classnames from 'classnames';
 
 class Alert extends Component {
 
     render() {
-        const { message } = this.props
+        const { message,messageType } = this.props
         return (
             <FlashMessage duration={5000}>
-                <div className="'alert-success'">
+               <div className={classnames('alert', {
+                    'alert-success': messageType === 'success',
+                    'alert-danger': messageType === 'error',
+                })}>
                     {message}
                 </div>
             </FlashMessage>
@@ -23,14 +27,14 @@ class Alert extends Component {
     }
 }
 
-
 Alert.propTypes = {
     message: PropTypes.string.isRequired,
     clearMsg:PropTypes.func.isRequired
    
 };
 const mapStateToProps = (state) => ({
-    message: state.alert.message
+    message: state.alert.message,
+    messageType:state.alert.messageType
 })
 export default 
     connect(mapStateToProps, { clearMsg })
