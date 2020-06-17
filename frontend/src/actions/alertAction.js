@@ -9,7 +9,6 @@ export const setMsg = (msg,msgType) => dispatch => {
 }
 
 export const clearMsg = () => dispatch => {
-    console("clearing error")
     dispatch(
         {
             type: CLEAR_ALERT,

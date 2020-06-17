@@ -25,6 +25,7 @@ class UserService {
             return data;
         }).catch(error => {
             console.log(error)
+            
           });
     }
     isLoggedin() {

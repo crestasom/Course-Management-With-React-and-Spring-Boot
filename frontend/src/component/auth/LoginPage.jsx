@@ -2,7 +2,7 @@ import React from 'react';
 
 import UserService from '../../service/UserService';
 import { setAuth } from '../../actions/authAction'
-import {setMsg} from '../../actions/alertAction';
+import {setMsg,clearMsg} from '../../actions/alertAction';
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import Alert from '../common/Alert';
@@ -15,7 +15,8 @@ class LoginPage extends React.Component {
         this.state = {
             username: '',
             password: '',
-            submitted: false
+            submitted: false,
+            alert:null
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -25,6 +26,12 @@ class LoginPage extends React.Component {
     handleChange(e) {
         const { name, value } = e.target;
         this.setState({ [name]: value });
+        this.props.clearMsg()
+    }
+    static getDerivedStateFromProps(props, state){
+        return{
+            alert:props.alert
+        }
     }
 
     handleSubmit(e) {
@@ -55,11 +62,11 @@ class LoginPage extends React.Component {
 
     render() {
         const { username, password, submitted } = this.state;
-        const {message}=this.props
-        console.log(message)
+        const {message,messageType}=this.state.alert
+       
         return (
             <div className="container">
-                 {message ? (<Alert message={message}  />) : null}
+                 {message ? (<Alert message={message} messageType={messageType} />) : null}
                 <h2>Login</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
@@ -92,6 +99,6 @@ LoginPage.propTypes = {
 }
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
-    message:state.auth.message,
+    alert:state.alert,
 })
-export default connect(mapStateToProps, { setAuth,setMsg })(LoginPage)
+export default connect(mapStateToProps, { setAuth,setMsg ,clearMsg})(LoginPage)
