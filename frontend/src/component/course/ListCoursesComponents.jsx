@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import CourseDataService from '../service/CourseDataService'
+import CourseDataService from '../../service/CourseDataService'
 import { connect } from 'react-redux'
 
 class ListCoursesComponents extends Component {

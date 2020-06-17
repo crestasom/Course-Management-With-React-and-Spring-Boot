@@ -1,7 +1,7 @@
-import UserService from '../service/UserService'
+import UserService from '../../service/UserService'
 import React from 'react'
 import { connect } from 'react-redux'
-import { clearAuth } from '../actions/authAction';
+import { clearAuth } from '../../actions/authAction';
 import PropTypes from 'prop-types'
 
 class Logout extends React.Component {

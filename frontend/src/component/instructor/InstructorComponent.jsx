@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withFormik, Form, Field, Formik, ErrorMessage } from 'formik'
-import InstructorDataService from '../service/InstructorDataService'
+import InstructorDataService from '../../service/InstructorDataService'
 class InstructorComponent extends Component {
     constructor(props) {
         super(props)

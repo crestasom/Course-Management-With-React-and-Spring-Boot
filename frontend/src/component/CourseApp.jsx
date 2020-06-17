@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
-import ListCoursesComponents from './ListCoursesComponents'
-import CourseComponent from './CourseComponent'
-import InstructorComponent from './InstructorComponent'
-import LoginPage from './LoginPage'
-import Logout from './Logout'
-import { PrivateRoute } from './PrivateRoute'
+import ListCoursesComponents from './course/ListCoursesComponents'
+import CourseComponent from './course/CourseComponent'
+import InstructorComponent from './instructor/InstructorComponent'
+import LoginPage from './auth/LoginPage'
+import Logout from './auth/Logout'
+import { PrivateRoute } from './common/PrivateRoute'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import AppNavBar from './AppNavBar'
+import AppNavBar from './common/AppNavBar'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from '../storeConfig'
 
-class InstructorApp extends Component {
+class CourseApp extends Component {
 
     render() {
         return (
@@ -37,4 +37,4 @@ class InstructorApp extends Component {
 
 
 
-export default InstructorApp
+export default CourseApp

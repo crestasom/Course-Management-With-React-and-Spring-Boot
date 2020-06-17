@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import CourseDataService from '../service/CourseDataService';
+import CourseDataService from '../../service/CourseDataService';
 
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import UserService from '../service/UserService';
-import { setAuth } from '../actions/authAction'
+import UserService from '../../service/UserService';
+import { setAuth } from '../../actions/authAction'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 class LoginPage extends React.Component {

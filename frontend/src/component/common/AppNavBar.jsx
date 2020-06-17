@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import UserService from '../service/UserService'
-import { isAuth } from '../actions/authAction'
 import { connect } from 'react-redux'
-import { PropTypes } from 'prop-types'
+
 class AppNavBar extends Component {
     state = {
         isAuthenticated: false
