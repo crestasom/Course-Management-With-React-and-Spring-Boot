@@ -55,7 +55,7 @@ class CourseComponent extends Component {
             targetDate: values.targetDate
         }
         //if (this.state.id === -1) {
-        CourseDataService.createCourse(username, course).then(() => this.props.history.push('/courses'))
+        CourseDataService.createCourse(username, course).then(() => this.props.history.push('/'))
         //  } else {
         //     CourseDataService.updateCourse(username, this.state.id, course).then(() => this.props.history.push('/courses'))
         // }

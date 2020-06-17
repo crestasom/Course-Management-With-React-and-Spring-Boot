@@ -4,8 +4,8 @@ import InstructorDataService from '../service/InstructorDataService'
 class InstructorComponent extends Component {
     constructor(props) {
         super(props)
-        this.save=this.save.bind(this)
-        this.validate=this.validate.bind(this)
+        this.save = this.save.bind(this)
+        this.validate = this.validate.bind(this)
 
         this.state = {
             id: "",
@@ -27,22 +27,22 @@ class InstructorComponent extends Component {
         }
         return error
     }
-    save(values){
-        let instructor={
-            userName:values.userName,
-            name:values.name
+    save(values) {
+        let instructor = {
+            userName: values.userName,
+            name: values.name
         }
-        InstructorDataService.saveInstructor(instructor).then(()=>{this.props.history.push('/courses')})
+        InstructorDataService.saveInstructor(instructor).then(() => { this.props.history.push('/') })
     }
 
     render() {
-        let {id,userName,name}=this.state
+        let { id, userName, name } = this.state
         return (
             <div>
                 <h2>Add New Instructor</h2>
                 <div className="container">
                     <Formik
-                    initialValues={{id,userName,name}}
+                        initialValues={{ id, userName, name }}
                         onSubmit={this.save}
                         enableReinitialize={true}
                         validate={this.validate}
