@@ -6,53 +6,37 @@ const INSTRUCTOR_API_URL = `${COURSE_API_URL}/instructors`
 
 class CourseDataService {
 
-    retrieveAllCourses(userName) {
+    requestWithHeader(method, url) {
+
         const requestOptions = {
-            method: 'GET',
             headers: authHeader()
         };
-        if (userName === '' || userName === undefined) {
-            return axios.get(`${COURSE_API_URL}/courses`, requestOptions)
-        }
+        return method(url, requestOptions)
+    }
 
-        return axios.get(`${COURSE_API_URL}/instructors/${userName}/courses`, requestOptions)
+    retrieveAllCourses(userName) {
+        if (userName === '' || userName === undefined) {
+            return this.requestWithHeader(axios.get, `${COURSE_API_URL}/courses`)
+        }
+        return this.requestWithHeader(axios.get, `${COURSE_API_URL}/instructors/${userName}/courses`)
 
     }
     deleteCourse(id) {
-        const requestOptions = {
-            method: 'GET',
-            headers: authHeader()
-        };
-        return axios.delete(`${COURSE_API_URL}/courses/${id}`, requestOptions)
+
+        return this.requestWithHeader(axios.delete, `${COURSE_API_URL}/courses/${id}`)
     }
     getCourse(id) {
-        const requestOptions = {
-            method: 'GET',
-            headers: authHeader()
-        };
-        return axios.get(`${COURSE_API_URL}/courses/${id}`, requestOptions)
+        return this.requestWithHeader(axios.get, `${COURSE_API_URL}/courses/${id}`)
     }
 
     createCourse(userName, course) {
-        const requestOptions = {
-            method: 'GET',
-            headers: authHeader()
-        };
-        return axios.post(`${INSTRUCTOR_API_URL}/${userName}/courses`, course, requestOptions)
+        return this.requestWithHeader(axios.post, `${INSTRUCTOR_API_URL}/${userName}/courses`, course)
     }
     updateCourse(userName, id, course) {
-        const requestOptions = {
-            method: 'GET',
-            headers: authHeader()
-        };
-        return axios.put(`${INSTRUCTOR_API_URL}/${userName}/courses/${id}`, course, requestOptions)
+        return this.requestWithHeader(axios.put, `${INSTRUCTOR_API_URL}/${userName}/courses/${id}`, course)
     }
     getInstructors() {
-        const requestOptions = {
-            method: 'GET',
-            headers: authHeader()
-        };
-        return axios.get(`${COURSE_API_URL}/instructors`, requestOptions)
+        return this.requestWithHeader(axios.get, `${COURSE_API_URL}/instructors`)
     }
 }
 export default new CourseDataService()
