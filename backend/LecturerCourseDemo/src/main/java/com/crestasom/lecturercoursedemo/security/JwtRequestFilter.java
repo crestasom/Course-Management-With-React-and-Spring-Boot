@@ -17,13 +17,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.crestasom.lecturercoursedemo.jwt.JwtUtil;
+import com.crestasom.lecturercoursedemo.service.UserService;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 	@Autowired
 	JwtUtil jUtil;
 	@Autowired
-	UserDetailsService userDetailService;
+	UserService userDetailService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -37,8 +38,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			userName = jUtil.extractUserName(jwt);
 		}
 		if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = userDetailService.loadUserByUsername(userName);
-			if (jUtil.validateToken(jwt, userDetails)) {
+			UserDetails userDetails = userDetailService.findByUserName(userName);
+			if (userDetails!=null && jUtil.validateToken(jwt, userDetails)) {
 				System.out.println("user is authenticated");
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());

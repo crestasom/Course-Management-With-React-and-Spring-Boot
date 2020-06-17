@@ -23,7 +23,9 @@ class UserService {
             }
 
             return data;
-        });
+        }).catch(error => {
+            console.log(error)
+          });
     }
     isLoggedin() {
         let user = JSON.parse(localStorage.getItem('user'));

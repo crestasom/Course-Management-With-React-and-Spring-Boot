@@ -1,4 +1,4 @@
-import { IS_AUTH, SET_AUTH, CLEAR_AUTH } from './type'
+import { SET_AUTH, CLEAR_AUTH } from './type'
 import UserService from '../service/UserService'
 export const setAuth = () => dispatch => {
     const status = UserService.isLoggedin()
@@ -15,3 +15,4 @@ export const clearAuth = () => dispatch => {
             type: CLEAR_AUTH,
         })
 }
+

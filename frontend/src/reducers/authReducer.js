@@ -1,6 +1,7 @@
-import { SET_AUTH, CLEAR_AUTH } from '../actions/type'
+import { SET_AUTH, CLEAR_AUTH,SET_ERROR,CLEAR_ERROR } from '../actions/type'
 const initialState = {
-    isAuthenticated: false
+    isAuthenticated: false,
+    message:""
 }
 export default function (state = initialState, action) {
     switch (action.type) {

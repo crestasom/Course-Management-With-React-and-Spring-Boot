@@ -19,27 +19,18 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.crestasom.lecturercoursedemo.service.MyUserDetailsService;
-
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	@Autowired
-	private MyUserDetailsService myUserDetailsService;
+
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		// TODO Auto-generated method stub
-		auth.userDetailsService(myUserDetailsService);
-	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// TODO Auto-generated method stub
 		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and().authorizeRequests()
-				.antMatchers("/auth", "/courses","/instructors","/instructors/*/courses").permitAll().anyRequest().authenticated().and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.antMatchers("/auth", "/instructors", "/courses", "/instructors/*/courses").permitAll().anyRequest()
+				.authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 	}
