@@ -61,16 +61,9 @@ public class CourseResource {
 	}
 
 	@PostMapping("/instructors/{userName}/courses")
-	public ResponseEntity<Void> createCourse(@PathVariable String userName, @RequestBody Course course) {
+	public ResponseEntity<Course> createCourse(@PathVariable String userName, @RequestBody Course course) {
 
 		Course createdCourse = courseManagementService.saveCourse(course, userName);
-
-		// Location
-		// Get current resource url
-		/// {id}
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdCourse.getId())
-				.toUri();
-
-		return ResponseEntity.created(uri).build();
+		return new ResponseEntity<Course>(createdCourse, HttpStatus.OK);
 	}
 }
