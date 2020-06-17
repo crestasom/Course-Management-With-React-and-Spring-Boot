@@ -1,19 +1,12 @@
 import axios from 'axios'
 import { authHeader } from '../helpers'
+import SuperService from './SuperService'
 const INSTRUCTOR = 'som'
-const COURSE_API_URL = 'http://localhost:8080'
+const COURSE_API_URL = 'http://localhost:8085'
 const INSTRUCTOR_API_URL = `${COURSE_API_URL}/instructors`
 
-class CourseDataService {
-
-    requestWithHeader(method, url) {
-
-        const requestOptions = {
-            headers: authHeader()
-        };
-        return method(url, requestOptions)
-    }
-
+class CourseDataService extends SuperService {
+   
     retrieveAllCourses(userName) {
         if (userName === '' || userName === undefined) {
             return this.requestWithHeader(axios.get, `${COURSE_API_URL}/courses`)

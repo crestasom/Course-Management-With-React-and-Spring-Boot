@@ -1,14 +1,12 @@
 import axios from "axios"
 import { authHeader } from '../helpers'
-const INSTRUCTOR_API_URL = 'http://localhost:8080'
-class InstructorDataService {
+import SuperService from "./SuperService";
+const INSTRUCTOR_API_URL = 'http://localhost:8085'
+class InstructorDataService extends SuperService{
 
     saveInstructor(instructor) {
-        const requestOptions = {
-            method: 'GET',
-            headers: authHeader()
-        };
-        return axios.post(`${INSTRUCTOR_API_URL}/instructor/save`, instructor, requestOptions)
+
+        return this.requestWithHeader(axios.post,`${INSTRUCTOR_API_URL}/instructor/save`, instructor)
     }
 }
 export default new InstructorDataService()
