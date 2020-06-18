@@ -1,28 +1,34 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
 class AppNavBar extends Component {
     state = {
-        isAuthenticated: false
+        isAuthenticated: false,
+        isAdmin: false,
+        tab: "Course"
     }
 
 
     static getDerivedStateFromProps(props, state) {
-        const { isAuthenticated } = props
+        const { isAuthenticated, isAdmin, tab } = props
         return {
-            isAuthenticated: isAuthenticated
+            isAuthenticated,
+            isAdmin,
+            tab
+
         }
     }
 
 
     render(props) {
-        const { isAuthenticated } = this.state
+        const { isAuthenticated, isAdmin, tab } = this.state
         return (
             <nav className="navbar navbar-expand-md navbar-dark bg-primary mb-4">
                 <div className='container'>
                     <Link to="/" className="navbar-brand">
-                        ClientPanel
+                        Course Management
                     </Link>
                     <button className="navbar-toggler"
                         type="button"
@@ -37,20 +43,35 @@ class AppNavBar extends Component {
                             <li className="nav-item">
                                 <Link to="/" className="nav-link">Dashboard</Link>
                             </li>
+                            {isAuthenticated ? (
+                                <li className="nav-item">
+                                    <Link to="/instructors" className="nav-link">Instructors</Link>
+                                </li>
 
+                            ) : null}
+                            {isAdmin ? (
+                                <li className="nav-item">
+                                    <Link to="/users" className="nav-link">Users</Link>
+                                </li>
+
+                            ) : null}
                         </ul>
 
                         <ul className="navbar-nav ml-auto">
                             {isAuthenticated ? (
+                                <>
+                                    <li className="nav-item"> <Link to={`/${tab}/add/-1`} className="nav-link">Hello {JSON.parse(localStorage.getItem("user")).username}</Link></li>
+                                    <li className="nav-item">
+                                        <Link to={`/${tab}/add/-1`} className="nav-link">Add {tab}</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link to="/logout" className="nav-link">Logout</Link>
+
+                                    </li>
+                                </>
+                            ) :
                                 <li className="nav-item">
-                                    <a href="#!" className="nav-link" onClick={() => this.props.history.push("/Logout")}>
-                                        Logout
-                                    </a>
-                                </li>) :
-                                <li className="nav-item">
-                                    <a href="#!" className="nav-link" onClick={() => this.props.history.push("/login")}>
-                                        Login
-                                    </a>
+                                    <Link to="/login" className="nav-link">Login</Link>
                                 </li>}
                         </ul>
 
@@ -61,7 +82,13 @@ class AppNavBar extends Component {
     }
 }
 
+AppNavBar.propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
+}
 const mapStateToProps = (state) => ({
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    isAdmin: state.auth.isAdmin,
+    tab: state.auth.tab
 })
 export default connect(mapStateToProps)(withRouter(AppNavBar))

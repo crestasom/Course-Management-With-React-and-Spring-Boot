@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import CourseDataService from '../../service/CourseDataService';
-
+import InstructorDataService from '../../service/InstructorDataService';
 
 
 class CourseComponent extends Component {
@@ -22,7 +22,7 @@ class CourseComponent extends Component {
     componentDidMount() {
 
         // eslint-disable-next-line
-        CourseDataService.getInstructors().then(
+        InstructorDataService.getInstructors().then(
             response => {
                 this.setState({
                     instructors: response.data,
@@ -74,7 +74,9 @@ class CourseComponent extends Component {
     render() {
 
         let { description, id, instructor, instructors } = this.state
+        console.log(id)
         id = id === '-1' ? "" : id
+
         return (
             <div>
                 <h3>Add New Course</h3>
@@ -99,6 +101,7 @@ class CourseComponent extends Component {
                                         <Field className="form-control" type="text" name="description" />
                                     </fieldset>
                                     <fieldset>
+                                        <label>Instructor</label>
                                         <Field component="select" className="form-control" name="instructor">
                                             {instructors.map(i =>
                                                 <option key={i.id} value={i.userName}>{i.name}</option>

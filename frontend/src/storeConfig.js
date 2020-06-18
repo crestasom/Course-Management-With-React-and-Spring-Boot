@@ -1,7 +1,7 @@
 import thunk from 'redux-thunk'
 //import rootReducer from './reducers'
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
-import createEngine from 'redux-storage-engine-localstorage';
+//import createEngine from 'redux-storage-engine-localstorage';
 //import * as storage from 'redux-storage';
 import authReducer from './reducers/authReducer'
 import alertReducer from './reducers/alertReducer';
@@ -14,7 +14,7 @@ const persistConfig = {
     storage,
 }
 //const rootReducer = storage.reducer(combineReducers({ auth: authReducer }))
-const rootReducer = combineReducers({ auth: authReducer,alert:alertReducer })
+const rootReducer = combineReducers({ auth: authReducer, alert: alertReducer })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const initialState = {}
 const middleware = [thunk]

@@ -25,8 +25,8 @@ class UserService {
             return data;
         }).catch(error => {
             console.log(error)
-            
-          });
+
+        });
     }
     isLoggedin() {
         let user = JSON.parse(localStorage.getItem('user'));
@@ -37,6 +37,8 @@ class UserService {
             return false
         }
     }
+
+
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('user');

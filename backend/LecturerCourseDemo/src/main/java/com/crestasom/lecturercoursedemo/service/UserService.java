@@ -16,7 +16,6 @@ public class UserService {
 
 	public User findByUserName(String userName, String password) {
 		User user = repo.findByUserName(userName);
-		System.out.println(password+":"+user);
 		if (user != null && encoder.matches(password, user.getPassword())) {
 			return user;
 		} else {

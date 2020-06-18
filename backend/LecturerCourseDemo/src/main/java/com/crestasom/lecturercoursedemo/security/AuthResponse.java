@@ -9,5 +9,4 @@ public class AuthResponse {
 	private final String jwt;
 	private String username;
 	private boolean isAdmin;
-
 }

@@ -13,54 +13,51 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.crestasom.lecturercoursedemo.model.Course;
 import com.crestasom.lecturercoursedemo.model.Instructor;
 import com.crestasom.lecturercoursedemo.service.CoursesService;
+import com.crestasom.lecturercoursedemo.service.InstructorService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
+@RequestMapping("courses")
 public class CourseResource {
 
 	@Autowired
 	private CoursesService courseManagementService;
 
-	@GetMapping("/instructors/{username}/courses")
-	public List<Course> getAllCoursesInstr(@PathVariable String username) {
-		return courseManagementService.findAll(username);
-	}
-
-	@GetMapping("/courses")
+	@GetMapping("")
 	public List<Course> getAllCourses() {
-		return courseManagementService.findAll("");
+		return courseManagementService.findAll();
 	}
 
-	@GetMapping("instructors")
-	public List<Instructor> getAllInstructors() {
-		return courseManagementService.getInstructors();
+	@GetMapping("/list/{username}")
+	public List<Course> getAllCoursesInstr(@PathVariable String username) {
+		return courseManagementService.findCoursesByInstructorUserName(username);
 	}
 
-	@DeleteMapping("/courses/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable long id) {
 		courseManagementService.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping("/courses/{id}")
+	@GetMapping("/{id}")
 	public Course getCourse(@PathVariable long id) {
 		return courseManagementService.findById(id);
 	}
 
-	@PutMapping("/instructors/{userName}/courses/{id}")
-	public ResponseEntity<Course> updateCourse(@PathVariable String userName, @PathVariable long id,
-			@RequestBody Course course) {
+	@PutMapping("update/{userName}")
+	public ResponseEntity<Course> updateCourse(@PathVariable String userName, @RequestBody Course course) {
 		Course courseUpdated = courseManagementService.saveCourse(course, userName);
 		return new ResponseEntity<Course>(courseUpdated, HttpStatus.OK);
 	}
 
-	@PostMapping("/instructors/{userName}/courses")
+	@PostMapping("/save/{userName}")
 	public ResponseEntity<Course> createCourse(@PathVariable String userName, @RequestBody Course course) {
 
 		Course createdCourse = courseManagementService.saveCourse(course, userName);

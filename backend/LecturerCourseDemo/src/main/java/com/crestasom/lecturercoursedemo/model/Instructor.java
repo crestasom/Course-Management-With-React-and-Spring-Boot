@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Instructor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private int id;
 	@Column(name = "user_name")
 	private String userName;
 	@Column(name = "name")

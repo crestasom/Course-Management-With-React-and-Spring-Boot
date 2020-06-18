@@ -2,7 +2,7 @@ import React from 'react';
 
 import UserService from '../../service/UserService';
 import { setAuth } from '../../actions/authAction'
-import {setMsg,clearMsg} from '../../actions/alertAction';
+import { setMsg, clearMsg } from '../../actions/alertAction';
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import Alert from '../common/Alert';
@@ -16,57 +16,49 @@ class LoginPage extends React.Component {
             username: '',
             password: '',
             submitted: false,
-            alert:null
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+            alert: null
+        }
+        this.props.clearMsg()
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     handleChange(e) {
-        const { name, value } = e.target;
-        this.setState({ [name]: value });
+        const { name, value } = e.target
+        this.setState({ [name]: value })
         this.props.clearMsg()
     }
-    static getDerivedStateFromProps(props, state){
-        return{
-            alert:props.alert
+    static getDerivedStateFromProps(props, state) {
+        return {
+            alert: props.alert
         }
     }
 
     handleSubmit(e) {
-        e.preventDefault();
-
-        this.setState({ submitted: true });
-        const { username, password } = this.state;
+        e.preventDefault()
+        this.setState({ submitted: true })
+        const { username, password } = this.state
         if (username && password) {
             UserService.checkLogin(username, password).then(res => {
-                if (res.status !== 200) {
-                    if (res.status === 403) {
-                        this.logout()
-                    }
-                    
-                } else {
-                    localStorage.setItem("user", JSON.stringify(res.data))
-                    this.props.setAuth()
-                    this.props.history.push("/")
-                }
-            }).catch(error => {
-                console.log(error)
-                this.props.setMsg("Invalid Username or Password","error")
+                localStorage.setItem("user", JSON.stringify(res.data))
+                this.props.setAuth()
+                this.props.history.push("/")
+            }).catch((error) => {
+                console.log(error.response.data)
+                this.props.setMsg(error.response.data, "error")
                 console.log("error set")
-                
-              })
+
+            })
         }
     }
 
     render() {
         const { username, password, submitted } = this.state;
-        const {message,messageType}=this.state.alert
-       
+        const { message, messageType } = this.state.alert
+
         return (
             <div className="container">
-                 {message ? (<Alert message={message} messageType={messageType} />) : null}
+                {message ? (<Alert message={message} messageType={messageType} />) : null}
                 <h2>Login</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
@@ -94,11 +86,11 @@ class LoginPage extends React.Component {
 
 LoginPage.propTypes = {
     setAuth: PropTypes.func.isRequired,
-    setMsg:PropTypes.func.isRequired,
+    setMsg: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool.isRequired
 }
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
-    alert:state.alert,
+    alert: state.alert,
 })
-export default connect(mapStateToProps, { setAuth,setMsg ,clearMsg})(LoginPage)
+export default connect(mapStateToProps, { setAuth, setMsg, clearMsg })(LoginPage)

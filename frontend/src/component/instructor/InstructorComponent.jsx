@@ -1,21 +1,34 @@
 import React, { Component } from 'react'
-import { withFormik, Form, Field, Formik, ErrorMessage } from 'formik'
+import { Form, Field, Formik, ErrorMessage } from 'formik'
 import InstructorDataService from '../../service/InstructorDataService'
+import Alert from '../common/Alert'
+import { setMsg, clearMsg } from '../../actions/alertAction';
+import { connect } from 'react-redux'
+import { PropTypes } from 'prop-types'
+
 class InstructorComponent extends Component {
     constructor(props) {
         super(props)
         this.save = this.save.bind(this)
         this.validate = this.validate.bind(this)
 
+        console.log(this.props.match.params.id)
         this.state = {
-            id: "",
+            id: this.props.match.params.id,
             userName: "",
-            name: ""
+            name: "",
+            alert: null
 
         }
     }
-    validate(values) {
+    static getDerivedStateFromProps(props, state) {
+        return {
+            alert: props.alert
+        }
+    }
+    async validate(values) {
         let error = {}
+        console.log(values)
         if (!values.userName) {
             error.description = "User Name cannot be blank"
         }
@@ -24,19 +37,54 @@ class InstructorComponent extends Component {
         }
         else if (!values.name) {
             error.description = "Name cannot be blank"
+        } else {
+            const res = await InstructorDataService.getInstructor(values.userName)
+            if (res.data && res.data.id !== values.id) {
+                //console.log("setting error")
+                error.description = `Username '${values.userName}' already exists. Please try different one.`
+            }
         }
+        console.log(error)
+        if (error) {
+            this.props.setMsg(error.description, "error")
+        }
+        //window.alert(error.description)
         return error
     }
     save(values) {
         let instructor = {
+            id: values.id,
             userName: values.userName,
             name: values.name
         }
-        InstructorDataService.saveInstructor(instructor).then(() => { this.props.history.push('/') })
+        InstructorDataService.saveInstructor(instructor)
+            .then(() => {
+                this.props.setMsg("Instructor added Successfully", "success")
+                this.props.history.push('/instructors')
+            })
+
+    }
+
+    componentDidMount() {
+        if (this.state.id === "-1") {
+            return
+        }
+        InstructorDataService.getInstructorById(this.state.id)
+            .then(res => {
+                console.log(res)
+                this.setState({
+                    userName: res.data.userName,
+                    name: res.data.name,
+                })
+            }
+            )
     }
 
     render() {
+        console.log("rendering instructor component")
         let { id, userName, name } = this.state
+        const { message, messageType } = this.state.alert
+        id = id === "-1" ? "" : id
         return (
             <div>
                 <h2>Add New Instructor</h2>
@@ -48,11 +96,16 @@ class InstructorComponent extends Component {
                         validate={this.validate}
                         validateOnBlur={false}
                         validateOnChange={false}
+
                     >
                         {
-                            () => (
+                            (props) => (
                                 <Form>
-                                    <ErrorMessage name='description' component='div' className='alert alert-warning' />
+                                    {/* <ErrorMessage name='description' component='div' className='alert alert-warning' /> */}
+                                    {message ? (<Alert message={message} messageType={messageType} />) : null}
+                                    <fieldset className="form-group">
+                                        <Field className="form-control" type="hidden" name="id" />
+                                    </fieldset>
                                     <fieldset className="form-group">
                                         <label>Username</label>
                                         <Field type="text" name="userName" className="form-control" />
@@ -67,12 +120,18 @@ class InstructorComponent extends Component {
                         }
                     </Formik>
                 </div>
-            </div>
+            </div >
 
         )
     }
 }
 
-
-
-export default InstructorComponent
+InstructorComponent.propTypes = {
+    alert: PropTypes.object.isRequired,
+    setMsg: PropTypes.func.isRequired,
+    clearMsg: PropTypes.func.isRequired,
+}
+const mapStateToProps = (state) => ({
+    alert: state.alert
+})
+export default connect(mapStateToProps, { setMsg, clearMsg })(InstructorComponent)
