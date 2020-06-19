@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.crestasom.lecturercoursedemo.model.User;
 import com.crestasom.lecturercoursedemo.repo.UserRepo;
 import com.crestasom.lecturercoursedemo.security.AuthRequest;
@@ -19,7 +18,7 @@ public class UserService {
 	PasswordEncoder encoder;
 
 	public User findByUserName(String userName, String password) {
-		User user = repo.findByUserName(userName);
+		User user = repo.findByUserName(userName).get();
 		if (user != null && encoder.matches(password, user.getPassword())) {
 			return user;
 		} else {
@@ -28,7 +27,7 @@ public class UserService {
 	}
 
 	public User findByUserName(String userName) {
-		return repo.findByUserName(userName);
+		return repo.findByUserName(userName).get();
 
 	}
 
@@ -40,8 +39,14 @@ public class UserService {
 	public User save(User user) {
 		// TODO Auto-generated method stub
 		Optional<User> tempUser = repo.findById(user.getId());
+		//check the admin value of user for insert
 		if (tempUser.isPresent()) {
 			user.setAdmin(tempUser.get().isAdmin());
+		}
+		//check if the use exists previously
+		tempUser = repo.findByUserName(user.getUsername());
+		if (tempUser.isPresent() && tempUser.get().getId() != user.getId()) {
+			return null;
 		}
 		return repo.save(user);
 	}
@@ -61,8 +66,13 @@ public class UserService {
 		return false;
 	}
 
-	public void delete(int id) {
-		repo.deleteById(id);
-
+	public boolean delete(int id) {
+		Optional<User> user = repo.findById(id);
+		if (user.isPresent() && !user.get().isAdmin()) {
+			repo.deleteById(id);
+			return true;
+		}
+		return false;
 	}
+
 }

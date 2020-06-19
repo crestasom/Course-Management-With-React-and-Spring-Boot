@@ -32,8 +32,6 @@ public class InstructorService {
 	public Instructor save(Instructor instructor) {
 
 		Instructor tempInst = findInstByUserName(instructor.getUserName());
-		System.out.println(instructor);
-		System.out.println(tempInst);
 		if (tempInst != null && tempInst.getId() != instructor.getId()) {
 			return null;
 		}

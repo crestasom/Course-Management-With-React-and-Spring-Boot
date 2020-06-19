@@ -5,12 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crestasom.lecturercoursedemo.jwt.JwtUtil;
@@ -27,6 +29,8 @@ public class UserResource {
 	UserService userService;
 	@Autowired
 	JwtUtil jUtil;
+	@Autowired
+	PasswordEncoder en;
 
 	@PostMapping("/auth")
 	public ResponseEntity<?> createAuthToken(@RequestBody AuthRequest authRequest) throws Exception {
@@ -60,9 +64,30 @@ public class UserResource {
 	public User getUserById(@PathVariable int id) {
 		return userService.getUserById(id);
 	}
-	
+
+	@GetMapping("/users/get/{username}")
+	public User getUserByUserName(@PathVariable String username) {
+		return userService.findByUserName(username);
+	}
+
 	@DeleteMapping("/users/{id}")
-	public void delete(@PathVariable int id) {
-		 userService.delete(id);
+	public ResponseEntity<?> delete(@PathVariable int id) {
+		if (userService.delete(id)) {
+			return ResponseEntity.ok(null);
+		} else {
+			return ResponseEntity.ok("cannot delete admin account");
+		}
+	}
+
+	@GetMapping("users/en-pass")
+	@ResponseBody
+	public String encryptPassword() {
+		userService.getAllUsers().forEach(user -> {
+			user.setPassword(en.encode(user.getPassword()));
+			System.out.println(user);
+			userService.save(user);
+		});
+
+		return "All Password encoded successfully";
 	}
 }

@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import CourseDataService from '../../service/CourseDataService'
 import InstructorDataService from '../../service/InstructorDataService'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import {clearMsg} from '../../actions/alertAction';
 import { setTab } from '../../actions/authAction'
-import { DataGrid, GridColumn } from 'rc-easyui';
 
 class ListCoursesComponents extends Component {
 
@@ -14,6 +13,14 @@ class ListCoursesComponents extends Component {
         this.refreshCourses = this.refreshCourses.bind(this)
         this.deleteCourseClicked = this.deleteCourseClicked.bind(this)
         this.refreshCoursesByLecturer = this.refreshCoursesByLecturer.bind(this)
+
+        if (window.performance) {
+            if (performance.navigation.type == 1) {
+              console.log( "This page is reloaded" );
+            } else {
+                console.log( "This page is not reloaded");
+            }
+          }
         this.props.setTab("Course")
         this.state = {
             courses: [],
@@ -22,15 +29,13 @@ class ListCoursesComponents extends Component {
             data: [],
             isAuthenticated: false,
             isAdmin: false,
-            total: 0,
-            pageNumber: 1,
-            pageSize: 2,
-            data: [],
-            loading: false,
         }
     }
-
-    static getDerivedStateFromProps(props, state) {
+    componentWillUnmount(){
+        console.log("component will unmount")
+        this.props.clearMsg()
+    }
+    static getDerivedStateFromProps(props) {
         const { isAuthenticated, isAdmin } = props
 
         return {
@@ -39,28 +44,11 @@ class ListCoursesComponents extends Component {
         }
     }
     componentDidMount() {
-        this.refreshCourses();
-        this.getInstructors();
-        this.loadPage(this.state.pageNumber, this.state.pageSize)
-        //this.loadPage(this.state.pageNumber, this.state.pageSize)
+        this.refreshCourses()
+        this.getInstructors()
     }
     handlePageChange(event) {
         this.getData(event.pageNumber, event.pageSize)
-    }
-
-
-    async loadPage(pageNumber, pageSize) {
-        this.setState({ loading: true })
-
-        setTimeout(() => {
-            console.log("result")
-            let result = this.getData(pageNumber, pageSize);
-            console.log("result", result)
-            this.setState(Object.assign({}, result, {
-                data: result.rows,
-                loading: false
-            }))
-        }, 1000);
     }
 
     getData(pageNumber, pageSize) {
@@ -87,19 +75,7 @@ class ListCoursesComponents extends Component {
             rows: data
         };
 
-        // console.log(pageNumber, pageSize)
-        // let start = (pageNumber - 1) * pageSize;
-        // let end = start + pageSize
-        // console.log(start, end)
-        // return {
-        //     total: this.state.courses.length,
-        //     pageNumber: pageNumber,
-        //     pageSize: pageSize,
-        //     rows: this.state.courses.map(({ id, description, instructor }) => ({
-        //         id, description, instructor: instructor.name
-        //     }))
-
-        // };
+      
     }
 
 
@@ -114,7 +90,7 @@ class ListCoursesComponents extends Component {
             }
         )
     }
-    refreshCourses(pageNo, pageSize) {
+    refreshCourses() {
         CourseDataService.retrieveAllCourses().then(
             response => {
                 this.setState({
@@ -138,7 +114,7 @@ class ListCoursesComponents extends Component {
         if (window.confirm("Are you sure you want to delete this course?")) {
             CourseDataService.deleteCourse(id)
                 .then(
-                    response => {
+                    () => {
                         this.setState({ message: `Delete of course ${id} Successful` })
                         this.refreshCourses()
                     }
@@ -174,7 +150,7 @@ class ListCoursesComponents extends Component {
 
 
     render() {
-        const { isAuthenticated, isAdmin } = this.state
+        const { isAuthenticated } = this.state
         return (
             <div className="container">
                 <h3>All Courses</h3>
@@ -228,11 +204,13 @@ class ListCoursesComponents extends Component {
 ListCoursesComponents.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
     isAdmin: PropTypes.bool.isRequired,
-    setTab: PropTypes.func.isRequired
+    setTab: PropTypes.func.isRequired,
+    clearMsg:PropTypes.func.isRequired
 }
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
     isAdmin: state.auth.isAdmin,
+    
 
 })
-export default connect(mapStateToProps, { setTab })(ListCoursesComponents)
+export default connect(mapStateToProps, { setTab,clearMsg })(ListCoursesComponents)

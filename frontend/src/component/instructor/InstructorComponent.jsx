@@ -6,20 +6,21 @@ import { setMsg, clearMsg } from '../../actions/alertAction';
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 
+
 class InstructorComponent extends Component {
     constructor(props) {
         super(props)
         this.save = this.save.bind(this)
         this.validate = this.validate.bind(this)
-
         this.state = {
             id: this.props.match.params.id,
             userName: "",
             name: "",
             alert: null
-
         }
     }
+
+    
     static getDerivedStateFromProps(props, state) {
         return {
             alert: props.alert
@@ -70,7 +71,6 @@ class InstructorComponent extends Component {
         }
         InstructorDataService.getInstructorById(this.state.id)
             .then(res => {
-                console.log(res)
                 this.setState({
                     userName: res.data.userName,
                     name: res.data.name,
@@ -80,6 +80,7 @@ class InstructorComponent extends Component {
     }
 
     render() {
+
         let { id, userName, name } = this.state
         const { message, messageType } = this.state.alert
         id = id === "-1" ? "" : id

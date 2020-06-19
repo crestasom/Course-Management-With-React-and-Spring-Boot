@@ -18,6 +18,9 @@ class UserDataService extends SuperService {
     getUserById(id) {
         return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/users/${id}`)
     }
+    getUserByUserName(username){
+        return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/users/get/${username}`)
+    }
 
     checkPassword(username, password) {
         return this.requestWithHeader(axios.post, `${BACKEND_API_URL}/auth/check-password`, { username, password })
