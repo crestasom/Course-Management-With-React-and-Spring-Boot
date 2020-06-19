@@ -12,7 +12,6 @@ class InstructorComponent extends Component {
         this.save = this.save.bind(this)
         this.validate = this.validate.bind(this)
 
-        console.log(this.props.match.params.id)
         this.state = {
             id: this.props.match.params.id,
             userName: "",
@@ -81,7 +80,6 @@ class InstructorComponent extends Component {
     }
 
     render() {
-        console.log("rendering instructor component")
         let { id, userName, name } = this.state
         const { message, messageType } = this.state.alert
         id = id === "-1" ? "" : id

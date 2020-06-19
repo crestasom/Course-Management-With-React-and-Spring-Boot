@@ -1,9 +1,29 @@
 import axios from 'axios'
-const COURSE_API_URL = 'http://localhost:8085'
-class UserService {
+import SuperService from './SuperService'
+const BACKEND_API_URL = 'http://localhost:8085'
+class UserDataService extends SuperService {
     checkLogin(username, password) {
         const user = { username, password }
-        return axios.post(`${COURSE_API_URL}/auth`, user)
+        return axios.post(`${BACKEND_API_URL}/auth`, user)
+    }
+
+    getUsers() {
+        return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/users`)
+    }
+
+    save(user) {
+        return this.requestWithHeader(axios.post, `${BACKEND_API_URL}/users`, user)
+    }
+
+    getUserById(id) {
+        return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/users/${id}`)
+    }
+
+    checkPassword(username, password) {
+        return this.requestWithHeader(axios.post, `${BACKEND_API_URL}/auth/check-password`, { username, password })
+    }
+    deleteUser(id) {
+        return this.requestWithHeader(axios.delete, `${BACKEND_API_URL}/users/${id}`)
     }
 
 
@@ -44,4 +64,4 @@ class UserService {
         localStorage.removeItem('user');
     }
 }
-export default new UserService()
+export default new UserDataService()

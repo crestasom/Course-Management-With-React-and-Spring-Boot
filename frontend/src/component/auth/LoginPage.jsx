@@ -1,6 +1,6 @@
 import React from 'react';
 
-import UserService from '../../service/UserService';
+import UserDataService from '../../service/UserDataService';
 import { setAuth } from '../../actions/authAction'
 import { setMsg, clearMsg } from '../../actions/alertAction';
 import { connect } from 'react-redux'
@@ -39,7 +39,7 @@ class LoginPage extends React.Component {
         this.setState({ submitted: true })
         const { username, password } = this.state
         if (username && password) {
-            UserService.checkLogin(username, password).then(res => {
+            UserDataService.checkLogin(username, password).then(res => {
                 localStorage.setItem("user", JSON.stringify(res.data))
                 this.props.setAuth()
                 this.props.history.push("/")

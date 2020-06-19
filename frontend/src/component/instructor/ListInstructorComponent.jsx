@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import InstructorDataService from '../../service/InstructorDataService'
-import { Link } from 'react-router-dom'
 import Alert from '../common/Alert'
 import { setMsg, clearMsg } from '../../actions/alertAction';
 import { setTab } from '../../actions/authAction'

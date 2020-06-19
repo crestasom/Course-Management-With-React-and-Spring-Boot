@@ -1,11 +1,15 @@
 package com.crestasom.lecturercoursedemo.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.crestasom.lecturercoursedemo.model.User;
 import com.crestasom.lecturercoursedemo.repo.UserRepo;
+import com.crestasom.lecturercoursedemo.security.AuthRequest;
 
 @Service
 public class UserService {
@@ -25,6 +29,40 @@ public class UserService {
 
 	public User findByUserName(String userName) {
 		return repo.findByUserName(userName);
+
+	}
+
+	public List<User> getAllUsers() {
+		// TODO Auto-generated method stub
+		return repo.findAll();
+	}
+
+	public User save(User user) {
+		// TODO Auto-generated method stub
+		Optional<User> tempUser = repo.findById(user.getId());
+		if (tempUser.isPresent()) {
+			user.setAdmin(tempUser.get().isAdmin());
+		}
+		return repo.save(user);
+	}
+
+	public User getUserById(int id) {
+		// TODO Auto-generated method stub
+		return repo.findById(id).get();
+	}
+
+	public boolean checkPassword(AuthRequest authRequest) {
+		User user = findByUserName(authRequest.getUsername());
+		System.out.println(authRequest.getPassword());
+		System.out.println(encoder.matches(authRequest.getPassword(), user.getPassword()));
+		if (user != null && encoder.matches(authRequest.getPassword(), user.getPassword())) {
+			return true;
+		}
+		return false;
+	}
+
+	public void delete(int id) {
+		repo.deleteById(id);
 
 	}
 }
