@@ -3,15 +3,17 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import { clearMsg } from '../../actions/alertAction'
 import React, { Component } from 'react'
-import FlashMessage from 'react-flash-message'
 import classnames from 'classnames';
 
 class Alert extends Component {
 
     render() {
         console.log("rendering alert")
-        const { message, messageType } = this.props
+        const { message, messageType } = this.props.alert
         console.log(message)
+        if (!message) {
+            return null
+        }
         return (
             <div className={classnames('alert', {
                 'alert-success': messageType === 'success',
@@ -31,10 +33,9 @@ Alert.propTypes = {
     message: PropTypes.string.isRequired,
     clearMsg: PropTypes.func.isRequired
 };
-const mapStateToProps = (state) => ({
-    message: state.alert.message,
-    messageType: state.alert.messageType
-})
+const mapStateToProps = ({ alert }) => {
+    return { alert }
+}
 export default
     connect(mapStateToProps, { clearMsg })
         (Alert);

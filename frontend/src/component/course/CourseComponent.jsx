@@ -74,7 +74,6 @@ class CourseComponent extends Component {
     render() {
 
         let { description, id, instructor, instructors } = this.state
-        console.log(id)
         id = id === '-1' ? "" : id
 
         return (

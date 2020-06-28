@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -17,7 +18,11 @@ public class JwtUtil {
 	private String SECRET_KEY = "secret";
 
 	public String extractUserName(String token) {
-		return extractClaim(token, Claims::getSubject);
+		try {
+			return extractClaim(token, Claims::getSubject);
+		} catch (Exception ex) {
+			return null;
+		}
 	}
 
 	public Date extractExpiration(String token) {
@@ -30,7 +35,9 @@ public class JwtUtil {
 	}
 
 	private Claims extractAllClaims(String token) {
+
 		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+
 	}
 
 	private boolean isTokenExpired(String token) {
@@ -51,7 +58,7 @@ public class JwtUtil {
 
 	public boolean validateToken(String token, UserDetails userDetails) {
 		final String userName = extractUserName(token);
-		if(userName==null) {
+		if (userName == null) {
 			return false;
 		}
 		return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));

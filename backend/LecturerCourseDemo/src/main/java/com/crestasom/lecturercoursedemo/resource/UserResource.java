@@ -1,4 +1,4 @@
-package com.crestasom.lecturercoursedemo;
+package com.crestasom.lecturercoursedemo.resource;
 
 import java.util.List;
 

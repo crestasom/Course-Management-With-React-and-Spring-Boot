@@ -15,6 +15,9 @@ import UserComponent from './user/UserComponent'
 import ListUserComponent from './user/ListUserComponent'
 import ListInstructorComponent from './instructor/ListInstructorComponent'
 import JeasyGrid from '../component/common/JeasyGrid'
+import AssignmentComponent from './assignment/AssignmentComponent'
+import CourseDetailsComponent from './course/CourseDetailsComponent'
+import ErrorBoundry from './common/ErrorBoundry'
 
 
 
@@ -26,17 +29,24 @@ class CourseApp extends Component {
                 <PersistGate loading={null} persistor={persistor}>
                     <Router>
                         <>
-                            <AppNavBar />
+                            <ErrorBoundry>
+                                <AppNavBar />
+                            </ErrorBoundry>
                             <Switch>
                                 <Route path="/" exact component={ListCoursesComponents} />
+
                                 <PrivateRoute path="/course/add/:id" component={CourseComponent} />
+                                <PrivateRoute path="/course/view/:id" component={CourseDetailsComponent} />
                                 <PrivateRoute path="/instructor/add/:id" component={InstructorComponent} />
                                 <PrivateRoute path="/instructors" component={ListInstructorComponent} />
+                                <PrivateRoute path="/course/:cid/assignment/add/:id" component={AssignmentComponent} />
                                 <Route path='/login' exact component={LoginPage} />
                                 <Route path='/logout' exact component={Logout} />
                                 <Route path='/jeasygrid' exact component={JeasyGrid} />
-                                <AdminRoute path="/user/add/:id" component={UserComponent} />
-                                <AdminRoute path="/users" component={ListUserComponent} />
+                                <ErrorBoundry>
+                                    <AdminRoute path="/user/add/:id" component={UserComponent} />
+                                    <AdminRoute path="/users" component={ListUserComponent} />
+                                </ErrorBoundry>
                             </Switch>
                         </>
                     </Router>

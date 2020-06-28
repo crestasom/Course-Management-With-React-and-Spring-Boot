@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import CourseDataService from '../../service/CourseDataService'
 import InstructorDataService from '../../service/InstructorDataService'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { setTab } from '../../actions/authAction'
-import { DataGrid, GridColumn } from 'rc-easyui';
 
 class ListCoursesComponents extends Component {
 
@@ -21,21 +19,19 @@ class ListCoursesComponents extends Component {
             instructors: [],
             data: [],
             isAuthenticated: false,
-            isAdmin: false,
             total: 0,
             pageNumber: 1,
             pageSize: 2,
-            data: [],
             loading: false,
         }
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { isAuthenticated, isAdmin } = props
+        const { isAuthenticated } = props
 
         return {
             isAuthenticated,
-            isAdmin
+
         }
     }
     componentDidMount() {
@@ -53,9 +49,7 @@ class ListCoursesComponents extends Component {
         this.setState({ loading: true })
 
         setTimeout(() => {
-            console.log("result")
             let result = this.getData(pageNumber, pageSize);
-            console.log("result", result)
             this.setState(Object.assign({}, result, {
                 data: result.rows,
                 loading: false
@@ -65,11 +59,9 @@ class ListCoursesComponents extends Component {
 
     getData(pageNumber, pageSize) {
         const { courses } = this.state
-        console.log(courses)
         let data = [];
         let start = (pageNumber - 1) * pageSize;
         let end = start + pageSize
-        console.log(start, end)
         for (let i = start; i < end; i++) {
             let course = courses[i]
             if (course) {
@@ -87,19 +79,6 @@ class ListCoursesComponents extends Component {
             rows: data
         };
 
-        // console.log(pageNumber, pageSize)
-        // let start = (pageNumber - 1) * pageSize;
-        // let end = start + pageSize
-        // console.log(start, end)
-        // return {
-        //     total: this.state.courses.length,
-        //     pageNumber: pageNumber,
-        //     pageSize: pageSize,
-        //     rows: this.state.courses.map(({ id, description, instructor }) => ({
-        //         id, description, instructor: instructor.name
-        //     }))
-
-        // };
     }
 
 
@@ -145,36 +124,9 @@ class ListCoursesComponents extends Component {
                 )
         }
     }
-    //     editDetail(value, row) {
-    //         var href = "javascript:updateData('" + row.iid + "')";
-    //         return '<a href="' + href + '">Edit Detail</a>';
-    //     }
-    //     render() {
-    //         const { isAuthenticated, isAdmin } = this.state
-    //         return (
-    //             <div className="container">
-    //                 <h2>All Courses</h2>
-
-    //                 <DataGrid
-    //                     style={{ height: 250 }}
-    //                     pagination
-    //                     lazy
-    //                     {...this.state}
-    //                     onPageChange={this.handlePageChange.bind(this)}
-    //                 >
-    //                     <GridColumn field="id" title="Id"></GridColumn>
-    //                     <GridColumn field="description" title="Description"></GridColumn>
-    //                     <GridColumn field="instructor" title="Instructor" align="right"></GridColumn>
-    //                     <th field="edit" formatter="editDetail">Edit</th>
-    //                 </DataGrid>
-    //             </div>
-    //         )
-    //     }
-    // }
-
 
     render() {
-        const { isAuthenticated, isAdmin } = this.state
+        const { isAuthenticated } = this.state
         return (
             <div className="container">
                 <h3>All Courses</h3>
@@ -195,6 +147,7 @@ class ListCoursesComponents extends Component {
                                 <th>Description</th>
                                 <th>Instructor</th>
                                 {isAuthenticated ? (<>
+                                    <th>Veiw Details</th>
                                     <th>Update</th>
                                     <th>Delete</th>
                                 </>
@@ -210,6 +163,7 @@ class ListCoursesComponents extends Component {
                                         <td>{course.instructor.name}</td>
                                         {isAuthenticated ? (
                                             <>
+                                                <td><button className="btn btn-success" onClick={() => this.props.history.push(`/course/view/${course.id}`)}>View</button></td>
                                                 <td><button className="btn btn-success" onClick={() => this.props.history.push(`/course/add/${course.id}`)}>Update</button></td>
                                                 <td><button className="btn btn-warning" onClick={() => this.deleteCourseClicked(course.id)}>Delete</button></td>
                                             </>
@@ -227,12 +181,10 @@ class ListCoursesComponents extends Component {
 }
 ListCoursesComponents.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
     setTab: PropTypes.func.isRequired
 }
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
-    isAdmin: state.auth.isAdmin,
 
 })
 export default connect(mapStateToProps, { setTab })(ListCoursesComponents)

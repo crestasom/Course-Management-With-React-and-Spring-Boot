@@ -1,7 +1,7 @@
 import React from 'react';
 
 import UserDataService from '../../service/UserDataService';
-import { setAuth } from '../../actions/authAction'
+import { setAuth, clearAuth } from '../../actions/authAction'
 import { setMsg, clearMsg } from '../../actions/alertAction';
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
@@ -9,7 +9,13 @@ import Alert from '../common/Alert';
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
-        if (props.isAuthenticated) {
+        if (!localStorage.getItem("user") && props.isAuthenticated) {
+            this.props.clearAuth()
+            this.props.setMsg("Session expired. Please login again", "error")
+        } else {
+            this.props.clearMsg()
+        }
+        if (props.isAuthenticated && localStorage.getItem("user")) {
             props.history.push("/")
         }
         this.state = {
@@ -18,7 +24,7 @@ class LoginPage extends React.Component {
             submitted: false,
             alert: null
         }
-        this.props.clearMsg()
+
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
@@ -93,4 +99,4 @@ const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
     alert: state.alert,
 })
-export default connect(mapStateToProps, { setAuth, setMsg, clearMsg })(LoginPage)
+export default connect(mapStateToProps, { setAuth, clearAuth, setMsg, clearMsg })(LoginPage)

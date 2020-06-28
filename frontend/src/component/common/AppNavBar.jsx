@@ -24,6 +24,7 @@ class AppNavBar extends Component {
 
     render(props) {
         const { isAuthenticated, isAdmin, tab } = this.state
+        const username = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).username : ""
         return (
             <nav className="navbar navbar-expand-md navbar-dark bg-primary mb-4">
                 <div className='container'>
@@ -60,7 +61,7 @@ class AppNavBar extends Component {
                         <ul className="navbar-nav ml-auto">
                             {isAuthenticated ? (
                                 <>
-                                    <li className="nav-item"> <Link to={`/${tab}/add/-1`} className="nav-link">Hello {JSON.parse(localStorage.getItem("user")).username}</Link></li>
+                                    <li className="nav-item"> <Link to={`/${tab}/add/-1`} className="nav-link">Hello {username}</Link></li>
                                     <li className="nav-item">
                                         <Link to={`/${tab}/add/-1`} className="nav-link">Add {tab}</Link>
                                     </li>

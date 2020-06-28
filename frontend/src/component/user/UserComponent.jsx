@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Field, Formik, ErrorMessage } from 'formik'
+import { Form, Field, Formik } from 'formik'
 import { setMsg } from '../../actions/alertAction'
 import UserDataService from '../../service/UserDataService'
 import { connect } from 'react-redux'

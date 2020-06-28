@@ -24,6 +24,10 @@ class ListUserComponent extends Component {
             }
         )
     }
+
+    componentWillUnmount() {
+        this.props.clearMsg()
+    }
     static getDerivedStateFromProps(props, state) {
         return {
             alert: props.alert,

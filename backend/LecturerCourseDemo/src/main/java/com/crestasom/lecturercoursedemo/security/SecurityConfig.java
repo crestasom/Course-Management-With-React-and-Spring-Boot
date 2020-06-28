@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		// TODO Auto-generated method stub
 		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and().authorizeRequests()
-				.antMatchers("/auth", "/instructors", "/courses", "/instructors/*/courses").permitAll().anyRequest()
+				.antMatchers("/auth", "/instructors", "/courses", "/instructors/*/courses","/assignments/getfile").permitAll().anyRequest()
 				.authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
