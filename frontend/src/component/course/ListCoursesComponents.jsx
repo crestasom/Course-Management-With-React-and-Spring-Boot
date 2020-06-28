@@ -3,6 +3,7 @@ import CourseDataService from '../../service/CourseDataService'
 import InstructorDataService from '../../service/InstructorDataService'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { clearMsg } from '../../actions/alertAction';
 import { setTab } from '../../actions/authAction'
 
 class ListCoursesComponents extends Component {
@@ -12,6 +13,14 @@ class ListCoursesComponents extends Component {
         this.refreshCourses = this.refreshCourses.bind(this)
         this.deleteCourseClicked = this.deleteCourseClicked.bind(this)
         this.refreshCoursesByLecturer = this.refreshCoursesByLecturer.bind(this)
+
+        if (window.performance) {
+            if (performance.navigation.type == 1) {
+                console.log("This page is reloaded");
+            } else {
+                console.log("This page is not reloaded");
+            }
+        }
         this.props.setTab("Course")
         this.state = {
             courses: [],
@@ -35,10 +44,8 @@ class ListCoursesComponents extends Component {
         }
     }
     componentDidMount() {
-        this.refreshCourses();
-        this.getInstructors();
-        this.loadPage(this.state.pageNumber, this.state.pageSize)
-        //this.loadPage(this.state.pageNumber, this.state.pageSize)
+        this.refreshCourses()
+        this.getInstructors()
     }
     handlePageChange(event) {
         this.getData(event.pageNumber, event.pageSize)
@@ -93,7 +100,7 @@ class ListCoursesComponents extends Component {
             }
         )
     }
-    refreshCourses(pageNo, pageSize) {
+    refreshCourses() {
         CourseDataService.retrieveAllCourses().then(
             response => {
                 this.setState({
@@ -117,7 +124,7 @@ class ListCoursesComponents extends Component {
         if (window.confirm("Are you sure you want to delete this course?")) {
             CourseDataService.deleteCourse(id)
                 .then(
-                    response => {
+                    () => {
                         this.setState({ message: `Delete of course ${id} Successful` })
                         this.refreshCourses()
                     }
@@ -187,4 +194,4 @@ const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
 
 })
-export default connect(mapStateToProps, { setTab })(ListCoursesComponents)
+export default connect(mapStateToProps, { setTab, clearMsg })(ListCoursesComponents)

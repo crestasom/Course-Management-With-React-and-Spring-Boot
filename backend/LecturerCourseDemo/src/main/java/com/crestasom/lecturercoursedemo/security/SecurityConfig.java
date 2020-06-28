@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// TODO Auto-generated method stub
 		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and().authorizeRequests()
 				.antMatchers("/auth", "/instructors", "/courses", "/instructors/*/courses","/assignments/getfile").permitAll().anyRequest()
+
 				.authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 

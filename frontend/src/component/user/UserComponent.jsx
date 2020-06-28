@@ -56,6 +56,12 @@ class UserComponent extends Component {
                 })
                 errors.description = "Incorrect Old Password "
             }
+        }else {
+            const res = await UserDataService.getUserByUserName(values.userName)
+            if (res.data && res.data.id !== values.id) {
+                //console.log("setting error")
+                errors.description = `Username '${values.userName}' already exists. Please try different one.`
+            } 
         }
         console.log(errors)
         return errors

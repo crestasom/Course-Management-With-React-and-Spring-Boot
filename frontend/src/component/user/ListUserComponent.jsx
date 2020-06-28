@@ -38,10 +38,14 @@ class ListUserComponent extends Component {
     deleteUserClicked(id) {
         if (window.confirm("Are you sure you want to delete this user?")) {
             UserDataService.deleteUser(id).then(res => {
+                if(!res.data){
                 this.setState({
                     users: this.state.users.filter(user => user.id !== id)
                 })
                 this.props.setMsg("User Deleted Successfully", "Success")
+            }else{
+                this.props.setMsg(res.data, "error")
+            }
             })
         }
     }
