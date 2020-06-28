@@ -9,12 +9,14 @@ Features Included.
 <div>
 <li><b>Front End.</b></li>
 <ul>
-  <li>Three Different Modules(Course,Instructor,User)</li>
+  <li>Three Different Modules(Course,Instructor,User,Assignment)</li>
   <li>CRUD Operation on each Module</li>
   <li>Filtering Courses by Instructor</li>
   <li>Login based Module Access</li>
   <li>Private and Admin Routing</li>
   <li>State Management with Redux</li>
+  <li>Redirect to login when JWT Authorization fails</li>
+  <li>File Upload and Download in Assignment Module</li>
   <ul/>
   </div>
   <div>
