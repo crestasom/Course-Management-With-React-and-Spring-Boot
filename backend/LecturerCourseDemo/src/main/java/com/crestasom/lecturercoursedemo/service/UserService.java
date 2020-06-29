@@ -27,7 +27,11 @@ public class UserService {
 	}
 
 	public User findByUserName(String userName) {
-		return repo.findByUserName(userName).get();
+		Optional<User> user = repo.findByUserName(userName);
+		if (user.isPresent())
+			return repo.findByUserName(userName).get();
+		else
+			return null;
 
 	}
 
@@ -39,11 +43,11 @@ public class UserService {
 	public User save(User user) {
 		// TODO Auto-generated method stub
 		Optional<User> tempUser = repo.findById(user.getId());
-		//check the admin value of user for insert
+		// check the admin value of user for insert
 		if (tempUser.isPresent()) {
 			user.setAdmin(tempUser.get().isAdmin());
 		}
-		//check if the use exists previously
+		// check if the use exists previously
 		tempUser = repo.findByUserName(user.getUsername());
 		if (tempUser.isPresent() && tempUser.get().getId() != user.getId()) {
 			return null;

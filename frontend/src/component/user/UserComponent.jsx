@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Form, Field, Formik } from 'formik'
 import { setMsg } from '../../actions/alertAction'
 import UserDataService from '../../service/UserDataService'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
+
 import Alert from '../common/Alert'
 class UserComponent extends Component {
     constructor(props) {
@@ -27,11 +26,10 @@ class UserComponent extends Component {
             password: values.password
         }
         UserDataService.save(instructor).then(() => {
-            console.log(this)
             if (values.id) {
-                this.props.setMsg("User Updated Successfully", "success")
+               setMsg("User Updated Successfully", "success")
             } else {
-                this.props.setMsg("Added New User Successfully", "success")
+                setMsg("Added New User Successfully", "success")
             }
             this.props.history.push('/users')
         })
@@ -141,12 +139,6 @@ class UserComponent extends Component {
     }
 }
 
-UserComponent.propTypes = {
-    alert: PropTypes.object.isRequired,
-    setMsg: PropTypes.func.isRequired
-}
-const mapStateToProps = (state) => ({
-    alert: state.alert
-})
 
-export default connect(mapStateToProps, { setMsg })(UserComponent)
+
+export default UserComponent

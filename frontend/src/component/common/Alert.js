@@ -1,16 +1,11 @@
 
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux';
-import { clearMsg } from '../../actions/alertAction'
 import React, { Component } from 'react'
 import classnames from 'classnames';
 
 class Alert extends Component {
 
     render() {
-        console.log("rendering alert")
-        const { message, messageType } = this.props.alert
-        console.log(message)
+        const { message, messageType } = this.props
         if (!message) {
             return null
         }
@@ -23,19 +18,8 @@ class Alert extends Component {
             </div>
         );
     }
-    componentWillUnmount() {
-        console.log("unmounting alert component")
-        this.props.clearMsg()
-    }
+    
 }
 
-Alert.propTypes = {
-    message: PropTypes.string.isRequired,
-    clearMsg: PropTypes.func.isRequired
-};
-const mapStateToProps = ({ alert }) => {
-    return { alert }
-}
-export default
-    connect(mapStateToProps, { clearMsg })
-        (Alert);
+
+export default Alert;

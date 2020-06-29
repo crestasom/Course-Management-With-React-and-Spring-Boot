@@ -44,9 +44,13 @@ public class AssignmentResource {
 		service.save(file);
 	}
 
+	@GetMapping("/getjs")
+	public String getJs() {
+		return "<h1>Hello World</h1>";
+	}
+
 	@GetMapping("/getfile")
-	public ResponseEntity<Resource> downloadFile(@RequestParam("path") String filePath,
-			HttpServletRequest request) {
+	public ResponseEntity<Resource> downloadFile(@RequestParam("path") String filePath, HttpServletRequest request) {
 		// Load file as Resource
 		Resource resource = fileService.loadFileAsResource(filePath);
 

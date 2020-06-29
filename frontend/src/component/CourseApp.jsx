@@ -18,6 +18,7 @@ import JeasyGrid from '../component/common/JeasyGrid'
 import AssignmentComponent from './assignment/AssignmentComponent'
 import CourseDetailsComponent from './course/CourseDetailsComponent'
 import ErrorBoundry from './common/ErrorBoundry'
+import Test from './common/Test';
 
 
 
@@ -31,6 +32,7 @@ class CourseApp extends Component {
                         <>
                             <ErrorBoundry>
                                 <AppNavBar />
+                                <Test/>
                             </ErrorBoundry>
                             <Switch>
                                 <Route path="/" exact component={ListCoursesComponents} />

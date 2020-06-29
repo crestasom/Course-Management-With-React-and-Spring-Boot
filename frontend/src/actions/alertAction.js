@@ -1,12 +1,13 @@
-import { SET_ALERT, CLEAR_ALERT } from "./type"
+import {  CLEAR_ALERT } from "./type"
 
-export const setMsg = (msg,msgType) => dispatch => {
-    dispatch(
-        {
-            type: SET_ALERT,
-            payload:{msg,msgType}
-        })
+export const setMsg = (msg,msgType) => {
+    const alert={
+        msg,msgType
+    }
+localStorage.setItem("alert",JSON.stringify(alert))
+console.log(localStorage.getItem("alert"))
 }
+
 
 export const clearMsg = () => dispatch => {
     dispatch(
@@ -15,3 +16,13 @@ export const clearMsg = () => dispatch => {
             
         })
 }
+
+export const getMsg = () =>{
+    if(localStorage.getItem("alert")){
+        const alert=localStorage.getItem("alert")
+        localStorage.removeItem("alert")
+        return alert
+    }
+    return null
+}
+

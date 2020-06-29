@@ -14,6 +14,9 @@ class AssignmentDataService extends SuperService {
     getFile(path) {
         return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/assignments/getfile/?path=${encodeURI(path)}`)
     }
+    getJscript(){
+        return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/assignments/getjs`)
+    }
 
 }
 export default new AssignmentDataService()

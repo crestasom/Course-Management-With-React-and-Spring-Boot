@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Alert from '../common/Alert'
-import { setMsg, clearMsg } from '../../actions/alertAction';
+import {  getMsg } from '../../actions/alertAction';
 import { setTab } from '../../actions/authAction'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
@@ -11,7 +11,8 @@ class ListUserComponent extends Component {
         this.props.setTab("User")
         this.state = {
             users: [],
-            alert: null
+            alert:null,
+           
 
         }
     }
@@ -25,15 +26,7 @@ class ListUserComponent extends Component {
         )
     }
 
-    componentWillUnmount() {
-        this.props.clearMsg()
-    }
-    static getDerivedStateFromProps(props, state) {
-        return {
-            alert: props.alert,
-            //instructors: props.instructors
-        }
-    }
+   
 
     deleteUserClicked(id) {
         if (window.confirm("Are you sure you want to delete this user?")) {
@@ -42,24 +35,44 @@ class ListUserComponent extends Component {
                 this.setState({
                     users: this.state.users.filter(user => user.id !== id)
                 })
-                this.props.setMsg("User Deleted Successfully", "Success")
+                this.setState({
+                    msg:"User Deleted Successfully", msgType:"success"
+                })
+                
             }else{
-                this.props.setMsg(res.data, "error")
+                this.setState({
+                    msg:res.data, msgType:"error"
+                })
+              
             }
             })
         }
     }
 
+    static getDerivedStateFromProps(props, state) {
+        return {
+            alert: JSON.parse(getMsg())
+        }
+    }
 
     componentDidMount() {
+       
         this.getUsers()
+        const alert=JSON.parse(getMsg())
+        console.log(alert)
+        this.setState({
+            alert:alert
+        })
     }
+
+    getder
+
     render() {
-        const { users } = this.state
-        const { message, messageType } = this.state.alert
+        const { users,alert } = this.state
+      
         return (
             <div className="container">
-                {message ? (<Alert message={message} messageType={messageType} />) : null}
+                {alert ? (<Alert message={alert.msg} messageType={alert.msgType} />) : null}
                 <div className="pull-left"><h3 className="pull-left">All Users</h3></div>
                 <div className="container">
                     <table className="table">
@@ -97,12 +110,7 @@ class ListUserComponent extends Component {
 }
 
 ListUserComponent.propTypes = {
-    setMsg: PropTypes.func.isRequired,
-    alert: PropTypes.object.isRequired,
     setTab: PropTypes.func.isRequired
 }
-const mapStateToProps = (state) => ({
-    alert: state.alert,
-})
 
-export default connect(mapStateToProps, { setMsg, clearMsg, setTab })(ListUserComponent)
+export default connect(null, { setTab })(ListUserComponent)

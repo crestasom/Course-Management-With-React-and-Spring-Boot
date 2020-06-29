@@ -15,7 +15,7 @@ class ListCoursesComponents extends Component {
         this.refreshCoursesByLecturer = this.refreshCoursesByLecturer.bind(this)
 
         if (window.performance) {
-            if (performance.navigation.type == 1) {
+            if (performance.navigation.type === 1) {
                 console.log("This page is reloaded");
             } else {
                 console.log("This page is not reloaded");
