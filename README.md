@@ -19,6 +19,8 @@ Features Included.
   <li>State Management with Redux</li>
   <li>Redirect to login when JWT Authorization fails</li>
   <li>File Upload and Download in Assignment Module</li>
+  <li>Checking password with existing password on user/instructor update</li>
+  <li>Checking username(if exists) on user/instructor insert</li>
   <ul/>
   </div>
   <div>
