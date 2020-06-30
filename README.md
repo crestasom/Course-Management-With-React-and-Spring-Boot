@@ -14,6 +14,8 @@ Features Included.
   <li>Filtering Courses by Instructor</li>
   <li>Login based Module Access</li>
   <li>Private and Admin Routing</li>
+  <li>Success or failure of crud operation message passing between components</li>
+  <li>Error Landing page while server is down</li>
   <li>State Management with Redux</li>
   <li>Redirect to login when JWT Authorization fails</li>
   <li>File Upload and Download in Assignment Module</li>
