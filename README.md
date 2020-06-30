@@ -29,6 +29,7 @@ Features Included.
   <li>Rest API for all three modules</li>
   <li>Spring Security with JWT Token validation</li>
   <li>CRUD operation for all four modules using Spring Data Jpa</li>
+    <li>All Required Methods for supporting frontend functionality</li>
   <ul/>
   </ul>
   </div>
