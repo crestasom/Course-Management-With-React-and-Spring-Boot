@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Alert from '../common/Alert'
-import {  getMsg } from '../../actions/alertAction';
+import { getMsg } from '../../actions/alertAction';
 import { setTab } from '../../actions/authAction'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
@@ -11,8 +11,8 @@ class ListUserComponent extends Component {
         this.props.setTab("User")
         this.state = {
             users: [],
-            alert:null,
-           
+            alert: null,
+
 
         }
     }
@@ -26,50 +26,46 @@ class ListUserComponent extends Component {
         )
     }
 
-   
+
 
     deleteUserClicked(id) {
         if (window.confirm("Are you sure you want to delete this user?")) {
             UserDataService.deleteUser(id).then(res => {
-                if(!res.data){
-                this.setState({
-                    users: this.state.users.filter(user => user.id !== id)
-                })
-                this.setState({
-                    msg:"User Deleted Successfully", msgType:"success"
-                })
-                
-            }else{
-                this.setState({
-                    msg:res.data, msgType:"error"
-                })
-              
-            }
+                if (!res.data) {
+                    this.setState({
+                        users: this.state.users.filter(user => user.id !== id),
+                        alert: {
+                            msg: "User Deleted Successfully",
+                            msgType: "success"
+                        }
+                    })
+
+
+                } else {
+                    this.setState({
+                        msg: res.data, msgType: "error"
+                    })
+
+                }
             })
         }
     }
 
-    static getDerivedStateFromProps(props, state) {
-        return {
-            alert: JSON.parse(getMsg())
-        }
-    }
 
     componentDidMount() {
-       
+
         this.getUsers()
-        const alert=JSON.parse(getMsg())
-        console.log(alert)
+        const alert = getMsg()
         this.setState({
-            alert:alert
+            alert: alert
         })
     }
 
     getder
 
     render() {
-        const { users,alert } = this.state
-      
+        const { users, alert } = this.state
+
         return (
             <div className="container">
                 {alert ? (<Alert message={alert.msg} messageType={alert.msgType} />) : null}
@@ -90,7 +86,7 @@ class ListUserComponent extends Component {
                                 users.map(user =>
                                     <tr key={user.id}>
                                         <td>{user.id}</td>
-                                        <td>{user.username}</td>
+                                        <td>{user.userName}</td>
                                         <td><button className="btn btn-success" onClick={() => this.props.history.push(`/user/add/${user.id}`)}>Update</button></td>
                                         <td><button className="btn btn-warning" onClick={() => this.deleteUserClicked(user.id)}>Delete</button></td>
                                     </tr>

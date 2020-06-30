@@ -1,6 +1,7 @@
 package com.crestasom.lecturercoursedemo.security;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -10,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.crestasom.lecturercoursedemo.jwt.JwtUtil;
+import com.crestasom.lecturercoursedemo.model.User;
 import com.crestasom.lecturercoursedemo.service.UserService;
 
 @Component
@@ -38,10 +39,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			userName = jUtil.extractUserName(jwt);
 		}
 		if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = userDetailService.findByUserName(userName);
+			User userDetails = userDetailService.findByUserName(userName);
 			if (userDetails!=null && jUtil.validateToken(jwt, userDetails)) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-						userDetails, null, userDetails.getAuthorities());
+						userDetails, null, new ArrayList<>());
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

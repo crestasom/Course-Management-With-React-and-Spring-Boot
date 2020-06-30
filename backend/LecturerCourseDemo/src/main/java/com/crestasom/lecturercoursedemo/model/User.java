@@ -1,36 +1,26 @@
 package com.crestasom.lecturercoursedemo.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
-@Data
 @Table(name = "user")
 @NoArgsConstructor
-public class User implements UserDetails {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+@ToString
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String userName;
-	@JsonIgnore
 	private String password;
 	private boolean isAdmin;
 
@@ -47,45 +37,39 @@ public class User implements UserDetails {
 		this.isAdmin = isAdmin;
 	}
 
-	@Override
-	@JsonIgnore
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return new ArrayList<>();
+	public int getId() {
+		return id;
 	}
 
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
+	public String getUserName() {
 		return userName;
 	}
 
-	@Override
-	@JsonIgnore
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
+	public boolean isAdmin() {
+		return isAdmin;
 	}
 
-	@Override
 	@JsonIgnore
-	public boolean isAccountNonLocked() {
+	public String getPassword() {
 		// TODO Auto-generated method stub
-		return true;
+		return password;
 	}
 
-	@Override
-	@JsonIgnore
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	@Override
-	@JsonIgnore
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@JsonProperty
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 }

@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.crestasom.lecturercoursedemo.model.User;
+
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -44,9 +44,9 @@ public class JwtUtil {
 		return extractExpiration(token).before(new Date());
 	}
 
-	public String generateToken(UserDetails userDetails) {
+	public String generateToken(User userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		return createToken(claims, userDetails.getUsername());
+		return createToken(claims, userDetails.getUserName());
 	}
 
 	private String createToken(Map<String, Object> claims, String subject) {
@@ -56,11 +56,11 @@ public class JwtUtil {
 
 	}
 
-	public boolean validateToken(String token, UserDetails userDetails) {
+	public boolean validateToken(String token, User userDetails) {
 		final String userName = extractUserName(token);
 		if (userName == null) {
 			return false;
 		}
-		return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
+		return (userName.equals(userDetails.getUserName()) && !isTokenExpired(token));
 	}
 }

@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import { Form, Field, Formik } from 'formik'
 import InstructorDataService from '../../service/InstructorDataService'
 import Alert from '../common/Alert'
-import { setMsg, clearMsg } from '../../actions/alertAction';
-import { connect } from 'react-redux'
-import { PropTypes } from 'prop-types'
+import { setMsg } from '../../actions/alertAction';
 
 
 class InstructorComponent extends Component {
@@ -20,12 +18,6 @@ class InstructorComponent extends Component {
         }
     }
 
-    
-    static getDerivedStateFromProps(props, state) {
-        return {
-            alert: props.alert
-        }
-    }
     async validate(values) {
         let error = {}
         console.log(values)
@@ -39,14 +31,17 @@ class InstructorComponent extends Component {
             error.description = "Name cannot be blank"
         } else {
             const res = await InstructorDataService.getInstructor(values.userName)
-            if (res.data && res.data.id !== values.id) {
-                //console.log("setting error")
+            if (res.data && res.data.id !== parseInt(values.id)) {
                 error.description = `Username '${values.userName}' already exists. Please try different one.`
             }
         }
         console.log(error)
         if (error) {
-            this.props.setMsg(error.description, "error")
+            this.setState({
+                alert: {
+                    message: error.description, messageType: "error"
+                }
+            })
         }
         //window.alert(error.description)
         return error
@@ -59,7 +54,10 @@ class InstructorComponent extends Component {
         }
         InstructorDataService.saveInstructor(instructor)
             .then(() => {
-                this.props.setMsg("Instructor added Successfully", "success")
+                if (values.id)
+                    setMsg("Instructor updated successfully", "success")
+                else
+                    setMsg("Instructor added successfully", "success")
                 this.props.history.push('/instructors')
             })
 
@@ -81,12 +79,11 @@ class InstructorComponent extends Component {
 
     render() {
 
-        let { id, userName, name } = this.state
-        const { message, messageType } = this.state.alert
+        let { id, userName, name, alert } = this.state
         id = id === "-1" ? "" : id
         return (
             <div>
-                <h2>Add New Instructor</h2>
+                <h2>{id ? "Update" : "Add"} Instructor</h2>
                 <div className="container">
                     <Formik
                         initialValues={{ id, userName, name }}
@@ -101,7 +98,7 @@ class InstructorComponent extends Component {
                             (props) => (
                                 <Form>
                                     {/* <ErrorMessage name='description' component='div' className='alert alert-warning' /> */}
-                                    {message ? (<Alert message={message} messageType={messageType} />) : null}
+                                    {alert ? (<Alert message={alert.message} messageType={alert.messageType} />) : null}
                                     <fieldset className="form-group">
                                         <Field className="form-control" type="hidden" name="id" />
                                     </fieldset>
@@ -125,12 +122,4 @@ class InstructorComponent extends Component {
     }
 }
 
-InstructorComponent.propTypes = {
-    alert: PropTypes.object.isRequired,
-    setMsg: PropTypes.func.isRequired,
-    clearMsg: PropTypes.func.isRequired,
-}
-const mapStateToProps = (state) => ({
-    alert: state.alert
-})
-export default connect(mapStateToProps, { setMsg, clearMsg })(InstructorComponent)
+export default InstructorComponent

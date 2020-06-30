@@ -3,8 +3,9 @@ import CourseDataService from '../../service/CourseDataService'
 import InstructorDataService from '../../service/InstructorDataService'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { clearMsg } from '../../actions/alertAction';
+import { getMsg } from '../../actions/alertAction';
 import { setTab } from '../../actions/authAction'
+import Alert from '../common/Alert'
 
 class ListCoursesComponents extends Component {
 
@@ -13,25 +14,13 @@ class ListCoursesComponents extends Component {
         this.refreshCourses = this.refreshCourses.bind(this)
         this.deleteCourseClicked = this.deleteCourseClicked.bind(this)
         this.refreshCoursesByLecturer = this.refreshCoursesByLecturer.bind(this)
-
-        if (window.performance) {
-            if (performance.navigation.type === 1) {
-                console.log("This page is reloaded");
-            } else {
-                console.log("This page is not reloaded");
-            }
-        }
         this.props.setTab("Course")
         this.state = {
             courses: [],
             message: "",
+            messageType: "",
             instructors: [],
-            data: [],
             isAuthenticated: false,
-            total: 0,
-            pageNumber: 1,
-            pageSize: 2,
-            loading: false,
         }
     }
 
@@ -46,50 +35,14 @@ class ListCoursesComponents extends Component {
     componentDidMount() {
         this.refreshCourses()
         this.getInstructors()
-    }
-    handlePageChange(event) {
-        this.getData(event.pageNumber, event.pageSize)
-    }
-
-
-    async loadPage(pageNumber, pageSize) {
-        this.setState({ loading: true })
-
-        setTimeout(() => {
-            let result = this.getData(pageNumber, pageSize);
-            this.setState(Object.assign({}, result, {
-                data: result.rows,
-                loading: false
-            }))
-        }, 1000);
-    }
-
-    getData(pageNumber, pageSize) {
-        const { courses } = this.state
-        let data = [];
-        let start = (pageNumber - 1) * pageSize;
-        let end = start + pageSize
-        for (let i = start; i < end; i++) {
-            let course = courses[i]
-            if (course) {
-                data.push({
-                    id: course.id,
-                    description: course.description,
-                    instructor: course.instructor.name
-                });
-            }
+        const alert = getMsg()
+        if (alert) {
+            let { msg, msgType } = alert
+            this.setState({
+                message: msg, messageType: msgType
+            })
         }
-        return {
-            total: courses.length,
-            pageNumber: pageNumber,
-            pageSize: pageSize,
-            rows: data
-        };
-
     }
-
-
-
 
     getInstructors() {
         InstructorDataService.getInstructors().then(
@@ -125,7 +78,7 @@ class ListCoursesComponents extends Component {
             CourseDataService.deleteCourse(id)
                 .then(
                     () => {
-                        this.setState({ message: `Delete of course ${id} Successful` })
+                        this.setState({ message: `Delete of course ${id} Successful`, messageType: "success" })
                         this.refreshCourses()
                     }
                 )
@@ -133,11 +86,11 @@ class ListCoursesComponents extends Component {
     }
 
     render() {
-        const { isAuthenticated } = this.state
+        const { isAuthenticated, message, messageType } = this.state
         return (
             <div className="container">
                 <h3>All Courses</h3>
-                {this.state.message && <div className='alert alert-success'>{this.state.message}</div>}
+                {message && <Alert message={message} messageType={messageType} />}
                 <div className="container">
                     <div className="container">
                         <label>Filter By: Instructor</label>
@@ -170,7 +123,7 @@ class ListCoursesComponents extends Component {
                                         <td>{course.instructor.name}</td>
                                         {isAuthenticated ? (
                                             <>
-                                                <td><button className="btn btn-success" onClick={() => this.props.history.push(`/course/view/${course.id}`)}>View</button></td>
+                                                <td><button className="btn btn-primary" onClick={() => this.props.history.push(`/course/view/${course.id}`)}>View</button></td>
                                                 <td><button className="btn btn-success" onClick={() => this.props.history.push(`/course/add/${course.id}`)}>Update</button></td>
                                                 <td><button className="btn btn-warning" onClick={() => this.deleteCourseClicked(course.id)}>Delete</button></td>
                                             </>
@@ -194,4 +147,4 @@ const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
 
 })
-export default connect(mapStateToProps, { setTab, clearMsg })(ListCoursesComponents)
+export default connect(mapStateToProps, { setTab })(ListCoursesComponents)

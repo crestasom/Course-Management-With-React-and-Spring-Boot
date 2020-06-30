@@ -57,7 +57,7 @@ class AssignmentComponent extends Component {
         // Request made to the backend api 
         // Send formData object 
         AssignmentDataService.save(formData).then(res => {
-            this.props.setMsg("Assignment added Successfully", "success")
+            setMsg("Assignment added Successfully", "success")
             this.props.history.push(`/course/view/${courseid}`)
         })
     };

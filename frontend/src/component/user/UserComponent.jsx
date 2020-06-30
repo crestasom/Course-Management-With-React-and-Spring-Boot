@@ -15,21 +15,23 @@ class UserComponent extends Component {
             confirmPassword: "",
             oldPassword: "",
             compPassword: "",
-            msg: ""
+            msg: "",
+            alert: null
         }
     }
 
     save = (values) => {
-        let instructor = {
+        let user = {
             id: values.id,
             userName: values.userName,
             password: values.password
         }
-        UserDataService.save(instructor).then(() => {
+        console.log(user)
+        UserDataService.save(user).then(() => {
             if (values.id) {
-               setMsg("User Updated Successfully", "success")
+                setMsg("User Updated Successfully", "success")
             } else {
-                setMsg("Added New User Successfully", "success")
+                setMsg("User Added Successfully", "success")
             }
             this.props.history.push('/users')
         })
@@ -37,37 +39,36 @@ class UserComponent extends Component {
 
     validate = async (values) => {
         let errors = {}
-        console.log(values)
-        if (values.password !== values.confirmPassword) {
-            //this.props.setMsg("Password and Confirm Password Doesnot Match", "error")
-            this.setState({
-                msg: "Password and Confirm Password Doesnot Match"
-            })
+        if (!values.userName) {
+            errors.description = "Username cannot be empty"
+        } else if (values.userName.length < 3) {
+            errors.description = "Username must be atleast three character"
+        } else if (!values.password) {
+            errors.description = "Password cannot be empty"
+        }
+        else if (!values.confirmPassword) {
+            errors.description = " Confirm Password cannot be empty"
+        }
+        else if (values.password !== values.confirmPassword) {
             errors.description = "Password and Confirm Password Doesnot Match"
         } else if (values.id) {
             const res = await UserDataService.checkPassword(values.userName, values.oldPassword)
-            console.log(res)
             if (!JSON.parse(res.data)) {
-                //this.props.setMsg("Password and Confirm Password Doesnot Match", "error")
-                this.setState({
-                    msg: "Incorrect Old Password "
-                })
                 errors.description = "Incorrect Old Password "
             }
-        }else {
+        } else {
             const res = await UserDataService.getUserByUserName(values.userName)
-            if (res.data && res.data.id !== values.id) {
-                //console.log("setting error")
+            if (res.data && res.data.id !== parseInt(values.id)) {
                 errors.description = `Username '${values.userName}' already exists. Please try different one.`
-            } 
+            }
         }
-        console.log(errors)
+        if (errors)
+            this.setState({
+                alert: {
+                    message: errors.description, messageType: "error"
+                }
+            })
         return errors
-    }
-    static getDerivedStateFromProps(props, state) {
-        return {
-            alert: props.alert
-        }
     }
 
 
@@ -80,16 +81,13 @@ class UserComponent extends Component {
             .then(res => {
                 console.log(res)
                 this.setState({
-                    userName: res.data.username,
-                    compPassword: res.data.password,
+                    userName: res.data.userName,
                 })
             }
             )
     }
-
     render() {
-        let { id, userName, password, confirmPassword, oldPassword } = this.state
-        const { msg } = this.state
+        let { id, userName, password, confirmPassword, oldPassword, alert } = this.state
         id = id === "-1" ? "" : id
         return (
             <div>
@@ -106,8 +104,8 @@ class UserComponent extends Component {
                         {
                             () => (
                                 <Form>
-                                    {/* <ErrorMessage name='description' component='div' className='alert alert-warning' /> */}
-                                    {msg ? (<Alert message={msg} messageType="error" />) : null}
+
+                                    {alert ? (<Alert message={alert.message} messageType={alert.messageType} />) : null}
                                     <fieldset className="form-group">
                                         <label>Username</label>
                                         <Field type="text" name="userName" className="form-control" />

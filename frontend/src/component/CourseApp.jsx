@@ -18,7 +18,7 @@ import JeasyGrid from '../component/common/JeasyGrid'
 import AssignmentComponent from './assignment/AssignmentComponent'
 import CourseDetailsComponent from './course/CourseDetailsComponent'
 import ErrorBoundry from './common/ErrorBoundry'
-import Test from './common/Test';
+import ErrorLanding from './common/ErrorLanding'
 
 
 
@@ -32,11 +32,10 @@ class CourseApp extends Component {
                         <>
                             <ErrorBoundry>
                                 <AppNavBar />
-                                <Test/>
                             </ErrorBoundry>
                             <Switch>
+                                <Route path="/server-error" exact component={ErrorLanding} />
                                 <Route path="/" exact component={ListCoursesComponents} />
-
                                 <PrivateRoute path="/course/add/:id" component={CourseComponent} />
                                 <PrivateRoute path="/course/view/:id" component={CourseDetailsComponent} />
                                 <PrivateRoute path="/instructor/add/:id" component={InstructorComponent} />

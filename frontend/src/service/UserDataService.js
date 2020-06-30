@@ -4,7 +4,7 @@ const BACKEND_API_URL = 'http://localhost:8085'
 class UserDataService extends SuperService {
     checkLogin(username, password) {
         const user = { username, password }
-        return axios.post(`${BACKEND_API_URL}/auth`, user)
+        return this.requestWithHeader(axios.post, `${BACKEND_API_URL}/auth`, user)
     }
 
     getUsers() {
@@ -18,7 +18,8 @@ class UserDataService extends SuperService {
     getUserById(id) {
         return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/users/${id}`)
     }
-    getUserByUserName(username){
+    getUserByUserName(username) {
+        console.log(username)
         return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/users/get/${username}`)
     }
 

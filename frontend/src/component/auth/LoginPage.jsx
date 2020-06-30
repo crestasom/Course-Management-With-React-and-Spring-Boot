@@ -2,8 +2,9 @@ import React from 'react';
 
 import UserDataService from '../../service/UserDataService';
 import { setAuth, clearAuth } from '../../actions/authAction'
-import { setMsg, clearMsg } from '../../actions/alertAction';
+import { setMsg, getMsg } from '../../actions/alertAction'
 import { connect } from 'react-redux'
+
 import { PropTypes } from 'prop-types'
 import Alert from '../common/Alert';
 class LoginPage extends React.Component {
@@ -11,9 +12,7 @@ class LoginPage extends React.Component {
         super(props);
         if (!localStorage.getItem("user") && props.isAuthenticated) {
             this.props.clearAuth()
-            this.props.setMsg("Session expired. Please login again", "error")
-        } else {
-            this.props.clearMsg()
+            setMsg("Session expired. Please login again", "error")
         }
         if (props.isAuthenticated && localStorage.getItem("user")) {
             props.history.push("/")
@@ -22,7 +21,8 @@ class LoginPage extends React.Component {
             username: '',
             password: '',
             submitted: false,
-            alert: null
+            message: "",
+            messageType: "",
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -31,8 +31,8 @@ class LoginPage extends React.Component {
 
     handleChange(e) {
         const { name, value } = e.target
-        this.setState({ [name]: value })
-        this.props.clearMsg()
+        this.setState({ [name]: value, message: "" })
+
     }
     static getDerivedStateFromProps(props, state) {
         return {
@@ -50,18 +50,26 @@ class LoginPage extends React.Component {
                 this.props.setAuth()
                 this.props.history.push("/")
             }).catch((error) => {
-                console.log(error.response.data)
-                this.props.setMsg(error.response.data, "error")
-                console.log("error set")
+                this.setState({
+                    message: error.response.data,
+                    messageType: "error"
+                })
+            })
+        }
+    }
 
+    componentDidMount() {
+        const alert = getMsg()
+        if (alert) {
+            let { msg, msgType } = alert
+            this.setState({
+                message: msg, messageType: msgType
             })
         }
     }
 
     render() {
-        const { username, password, submitted } = this.state;
-        const { message, messageType } = this.state.alert
-
+        const { username, password, submitted, message, messageType } = this.state;
         return (
             <div className="container">
                 {message ? (<Alert message={message} messageType={messageType} />) : null}
@@ -69,7 +77,7 @@ class LoginPage extends React.Component {
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
+                        <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} autoFocus={true} />
                         {submitted && !username &&
                             <div className="help-block">Username is required</div>
                         }
@@ -92,11 +100,10 @@ class LoginPage extends React.Component {
 
 LoginPage.propTypes = {
     setAuth: PropTypes.func.isRequired,
-    setMsg: PropTypes.func.isRequired,
+    clearAuth: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool.isRequired
 }
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
-    alert: state.alert,
 })
-export default connect(mapStateToProps, { setAuth, clearAuth, setMsg, clearMsg })(LoginPage)
+export default connect(mapStateToProps, { setAuth, clearAuth })(LoginPage)

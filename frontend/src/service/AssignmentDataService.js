@@ -14,8 +14,12 @@ class AssignmentDataService extends SuperService {
     getFile(path) {
         return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/assignments/getfile/?path=${encodeURI(path)}`)
     }
-    getJscript(){
+    getJscript() {
         return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/assignments/getjs`)
+    }
+
+    deleteAssignment(id) {
+        return this.requestWithHeader(axios.delete, `${BACKEND_API_URL}/assignments/${id}`)
     }
 
 }

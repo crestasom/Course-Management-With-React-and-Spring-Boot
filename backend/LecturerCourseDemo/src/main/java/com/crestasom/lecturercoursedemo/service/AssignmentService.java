@@ -54,4 +54,9 @@ public class AssignmentService {
 		return repo.findAll();
 	}
 
+	public void deleteById(int id) {
+		// TODO Auto-generated method stub
+		repo.deleteById(id);
+	}
+
 }

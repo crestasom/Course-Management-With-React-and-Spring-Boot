@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import CourseDataService from '../../service/CourseDataService';
 import InstructorDataService from '../../service/InstructorDataService';
-
+import { setMsg } from '../../actions/alertAction'
 
 class CourseComponent extends Component {
     constructor(props) {
@@ -47,18 +47,19 @@ class CourseComponent extends Component {
     }
 
     onSubmit(values) {
-        console.log(values)
         let username = values.instructor
         let course = {
             id: values.id,
             description: values.description,
             targetDate: values.targetDate
         }
-        //if (this.state.id === -1) {
-        CourseDataService.createCourse(username, course).then(() => this.props.history.push('/'))
-        //  } else {
-        //     CourseDataService.updateCourse(username, this.state.id, course).then(() => this.props.history.push('/courses'))
-        // }
+        CourseDataService.createCourse(username, course).then(res => {
+            if (!values.id)
+                setMsg("Course added successfully", "success")
+            else
+                setMsg("Course updated successfully", "success")
+            this.props.history.push('/')
+        })
     }
 
     validate(values) {

@@ -18,9 +18,9 @@ public class UserService {
 	PasswordEncoder encoder;
 
 	public User findByUserName(String userName, String password) {
-		User user = repo.findByUserName(userName).get();
-		if (user != null && encoder.matches(password, user.getPassword())) {
-			return user;
+		Optional<User> user = repo.findByUserName(userName);
+		if (user.isPresent() && encoder.matches(password, user.get().getPassword())) {
+			return user.get();
 		} else {
 			return null;
 		}
@@ -48,10 +48,11 @@ public class UserService {
 			user.setAdmin(tempUser.get().isAdmin());
 		}
 		// check if the use exists previously
-		tempUser = repo.findByUserName(user.getUsername());
+		tempUser = repo.findByUserName(user.getUserName());
 		if (tempUser.isPresent() && tempUser.get().getId() != user.getId()) {
 			return null;
 		}
+		System.out.println(user);
 		return repo.save(user);
 	}
 

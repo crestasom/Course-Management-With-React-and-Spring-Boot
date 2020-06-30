@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import InstructorDataService from '../../service/InstructorDataService'
 import Alert from '../common/Alert'
-import { setMsg, clearMsg } from '../../actions/alertAction';
+import { setMsg, getMsg } from '../../actions/alertAction';
 import { setTab } from '../../actions/authAction'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
@@ -24,22 +24,18 @@ class ListInstructorComponent extends Component {
 
     state = {
         instructors: [],
-        alert: null,
+        message: "",
+        messageType: ""
     }
 
-    static getDerivedStateFromProps(props, state) {
-        return {
-            alert: props.alert,
-            //instructors: props.instructors
-        }
-    }
+
 
     deleteInstructorClicked(id) {
         if (window.confirm("Are you sure you want to delete this instructor?")) {
             InstructorDataService.deleteInstructor(id)
                 .then(
                     response => {
-                        this.props.setMsg(`Delete of instructor ${id} Successful`, "success")
+                        setMsg(`Delete of instructor ${id} Successful`, "success")
                         this.setState({
                             instructors: this.state.instructors.filter(instructor =>
                                 instructor.id !== id)
@@ -47,21 +43,30 @@ class ListInstructorComponent extends Component {
                     }
                 ).catch((error) => {
                     console.log(error.response)
-                    this.props.setMsg("Cannot Delete Instructor with Courses Assigned!!!Please delete assigned courses first", "error")
-                    console.log("error set")
+                    this.setState({
+                        message: "Cannot Delete Instructor with Courses Assigned!!!Please delete assigned courses first",
+                        messageType: "error"
+                    })
 
                 })
         }
     }
     componentDidMount() {
         this.getInstructors()
+        const alert = getMsg()
+        if (alert) {
+            const { msg, msgType } = alert
+            this.setState({
+                message: msg, messageType: msgType
+            })
+        }
     }
     render() {
         const { instructors } = this.state
-        const { message, messageType } = this.state.alert
+        const { message, messageType } = this.state
         return (
             <div className="container">
-                {message ? (<Alert message={message} messageType={messageType} />) : null}
+                {message && (<Alert message={message} messageType={messageType} />)}
                 <div className="pull-left"><h3 className="pull-left">All Instructor</h3></div>
                 <div className="container">
                     <table className="table">
@@ -101,13 +106,9 @@ class ListInstructorComponent extends Component {
 }
 
 ListInstructorComponent.propTypes = {
-    setMsg: PropTypes.func.isRequired,
-    alert: PropTypes.object.isRequired,
     setTab: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => ({
-    alert: state.alert,
-})
 
-export default connect(mapStateToProps, { setMsg, clearMsg, setTab })(ListInstructorComponent)
+
+export default connect(null, { setTab })(ListInstructorComponent)
