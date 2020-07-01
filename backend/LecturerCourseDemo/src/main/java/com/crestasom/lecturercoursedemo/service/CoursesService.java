@@ -1,17 +1,22 @@
 package com.crestasom.lecturercoursedemo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crestasom.lecturercoursedemo.model.Course;
+import com.crestasom.lecturercoursedemo.model.Semester;
 import com.crestasom.lecturercoursedemo.repo.CourseRepo;
+import com.crestasom.lecturercoursedemo.repo.SemesterRepo;
 
 @Service
 public class CoursesService {
 	@Autowired
 	CourseRepo repo;
+	@Autowired
+	SemesterService semService;
 
 	@Autowired
 	InstructorService iService;
@@ -21,14 +26,32 @@ public class CoursesService {
 	}
 
 	public List<Course> findAll() {
-			return repo.findAll();
+		return repo.findAll();
 	}
-	
+
+	public List<Course> findAll(int semId) {
+		List<Course> cList = findAll();
+		final List<Course> data = new ArrayList<>();
+		Semester sem = semService.findById(semId);
+		if (sem == null) {
+			return cList;
+		} else {
+			cList.forEach(c -> {
+				if (sem.getCourseList().contains(c)) {
+					c.setSelected(true);
+				}
+				data.add(c);
+			});
+		}
+		return data;
+
+	}
+
 	public List<Course> findCoursesByInstructorUserName(String userName) {
-			return repo.findByInstructorUserName(userName);
-		
+		return repo.findByInstructorUserName(userName);
+
 	}
-	
+
 	public Course findById(long id) {
 		return repo.findById(id).get();
 	}

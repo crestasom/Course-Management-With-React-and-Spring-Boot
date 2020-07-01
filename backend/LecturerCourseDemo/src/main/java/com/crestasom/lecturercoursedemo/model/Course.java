@@ -1,14 +1,19 @@
 package com.crestasom.lecturercoursedemo.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GeneratorType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +31,12 @@ public class Course implements Comparable<Course> {
 	private String description;
 	@ManyToOne
 	private Instructor instructor;
+	@Transient
+	private boolean isSelected;
+	@Transient
+	private boolean visible = true;
+	@ManyToMany
+	private List<Semester> semList;
 
 	@Override
 	public int compareTo(Course o) {

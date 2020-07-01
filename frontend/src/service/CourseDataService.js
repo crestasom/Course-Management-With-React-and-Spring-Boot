@@ -11,6 +11,9 @@ class CourseDataService extends SuperService {
         return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/courses/list/${userName}`)
 
     }
+    retrieveAllCoursesWithSemMapping(id) {
+        return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/courses/sem/${id}`)
+    }
     deleteCourse(id) {
 
         return this.requestWithHeader(axios.delete, `${BACKEND_API_URL}/courses/${id}`)

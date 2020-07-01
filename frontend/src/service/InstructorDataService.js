@@ -16,8 +16,8 @@ class InstructorDataService extends SuperService {
     getInstructor(username) {
         return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/instructors/${username}`)
     }
-    getInstructorById(username) {
-        return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/instructors/id/${username}`)
+    getInstructorById(id) {
+        return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/instructors/id/${id}`)
     }
 }
 export default new InstructorDataService()

@@ -19,6 +19,9 @@ import AssignmentComponent from './assignment/AssignmentComponent'
 import CourseDetailsComponent from './course/CourseDetailsComponent'
 import ErrorBoundry from './common/ErrorBoundry'
 import ErrorLanding from './common/ErrorLanding'
+import SemesterComponent from './semester/SemesterComponent'
+import ListSemesterComponent from './semester/ListSemesterComponent'
+import MapSemesterSubject from './semester/MapSemesterSubject'
 
 
 
@@ -36,6 +39,11 @@ class CourseApp extends Component {
                             <Switch>
                                 <Route path="/server-error" exact component={ErrorLanding} />
                                 <Route path="/" exact component={ListCoursesComponents} />
+
+                                <AdminRoute path="/semester/add/:id" exact component={SemesterComponent} />
+                                <AdminRoute path="/semester" exact component={ListSemesterComponent} />
+                                <AdminRoute path="/semester/map/:id" exact component={MapSemesterSubject} />
+
                                 <PrivateRoute path="/course/add/:id" component={CourseComponent} />
                                 <PrivateRoute path="/course/view/:id" component={CourseDetailsComponent} />
                                 <PrivateRoute path="/instructor/add/:id" component={InstructorComponent} />

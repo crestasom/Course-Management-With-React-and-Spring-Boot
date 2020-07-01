@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import InstructorDataService from '../../service/InstructorDataService'
 import Alert from '../common/Alert'
-import { setMsg, getMsg } from '../../actions/alertAction';
+import { setMsg, getMsg } from '../../actions/alertAction'
 import { setTab } from '../../actions/authAction'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'

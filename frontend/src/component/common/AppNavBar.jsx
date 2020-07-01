@@ -45,9 +45,14 @@ class AppNavBar extends Component {
                                 <Link to="/" className="nav-link">Dashboard</Link>
                             </li>
                             {isAuthenticated ? (
-                                <li className="nav-item">
-                                    <Link to="/instructors" className="nav-link">Instructors</Link>
-                                </li>
+                                <>
+                                    <li className="nav-item">
+                                        <Link to="/instructors" className="nav-link">Instructors</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link to="/semester" className="nav-link">Semester</Link>
+                                    </li>
+                                </>
 
                             ) : null}
                             {isAdmin ? (
