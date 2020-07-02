@@ -123,9 +123,9 @@ class ListCoursesComponents extends Component {
                                         {course.instructor ? <td> {course.instructor.name} </td> : <td style={{ color: "red" }}><b>Not Set</b></td>}
                                         {isAuthenticated ? (
                                             <>
-                                                <td><button className="btn btn-primary" onClick={() => this.props.history.push(`/course/view/${course.id}`)}>View</button></td>
-                                                <td><button className="btn btn-success" onClick={() => this.props.history.push(`/course/add/${course.id}`)}>Update</button></td>
-                                                <td><button className="btn btn-warning" onClick={() => this.deleteCourseClicked(course.id)}>Delete</button></td>
+                                                <td><button className="btn btn-primary btn-block" onClick={() => this.props.history.push(`/course/view/${course.id}`)}>View</button></td>
+                                                <td><button className="btn btn-success btn-block" onClick={() => this.props.history.push(`/course/add/${course.id}`)}>Update</button></td>
+                                                <td><button className="btn btn-warning btn-block" onClick={() => this.deleteCourseClicked(course.id)}>Delete</button></td>
                                             </>
                                         ) : null}
 

@@ -22,6 +22,7 @@ import ErrorLanding from './common/ErrorLanding'
 import SemesterComponent from './semester/SemesterComponent'
 import ListSemesterComponent from './semester/ListSemesterComponent'
 import MapSemesterSubject from './semester/MapSemesterSubject'
+import NavBarDemo from './common/NavBarDemo'
 
 
 
@@ -50,6 +51,7 @@ class CourseApp extends Component {
                                 <PrivateRoute path="/instructors" component={ListInstructorComponent} />
                                 <PrivateRoute path="/course/:cid/assignment/add/:id" component={AssignmentComponent} />
                                 <Route path='/login' exact component={LoginPage} />
+                                <Route path='/navbar-demo' exact component={NavBarDemo} />
                                 <Route path='/logout' exact component={Logout} />
                                 <Route path='/jeasygrid' exact component={JeasyGrid} />
                                 <ErrorBoundry>

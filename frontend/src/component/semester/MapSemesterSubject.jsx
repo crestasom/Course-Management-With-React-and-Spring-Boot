@@ -101,10 +101,10 @@ class MapSemesterSubject extends Component {
                     {alert && (<Alert message={alert.msg} messageType={alert.msgType} />)}
                     <div>
                         <div style={{ float: "left", paddingLeft: 30 }}><h3 className="pull-left">Map Subjects for Semester:<b> {semester.semester}</b></h3></div>
-                        <div style={{ float: "right", paddingRight: 30 }}> <button className="btn btn-success" onClick={() => this.mapSubject()}>Map Subject</button></div>
+                        <div style={{ float: "right", paddingRight: 30, paddingTop: 3, paddingBottom: 3 }}> <button className="btn btn-success" onClick={() => this.mapSubject()}>Map Subject</button></div>
                     </div>
                     <div className="container">
-                        <div className="container"><input type="text" className="form-control" placeholder="Filter Subject" onChange={this.filterSubjectList} /></div>
+                        <div className="container" style={{ paddingBottom: 3 }}><input type="text" className="form-control" placeholder="Filter Subject" onChange={this.filterSubjectList} /></div>
                         <table className="table">
                             <thead>
                                 <tr>

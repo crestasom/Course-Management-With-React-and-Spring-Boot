@@ -26,7 +26,7 @@ class AppNavBar extends Component {
         const { isAuthenticated, isAdmin, tab } = this.state
         const username = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).username : ""
         return (
-            <nav className="navbar navbar-expand-md navbar-dark bg-primary mb-4">
+            <nav className="navbar navbar-expand-md navbar-dark bg-primary">
                 <div className='container'>
                     <Link to="/" className="navbar-brand">
                         Course Management

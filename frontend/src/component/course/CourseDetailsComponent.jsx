@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import CourseDataService from '../../service/CourseDataService'
 import AssignmentDataService from '../../service/AssignmentDataService'
-import { setMsg, clearMsg, getMsg } from '../../actions/alertAction';
+import { getMsg } from '../../actions/alertAction';
 import Alert from '../common/Alert'
-import { connect } from 'react-redux'
-import { PropTypes } from 'prop-types'
+import moment from "moment"
 import loading from '../../img/loading.gif'
 const BACKEND_API_URL = 'http://localhost:8085'
 class CourseDetailsComponent extends Component {
@@ -55,7 +54,6 @@ class CourseDetailsComponent extends Component {
             AssignmentDataService.deleteAssignment(id)
                 .then(
                     () => {
-                        this.setState({})
                         this.setState({
                             assignments: this.state.assignments.filter(assignment => assignment.id !== id),
                             message: `Delete of assignment ${id} Successful`,
@@ -118,7 +116,7 @@ class CourseDetailsComponent extends Component {
                                                     <td>{sn++}</td>
                                                     <td>{assignment.name}</td>
                                                     <td>{assignment.description}</td>
-                                                    <td>{assignment.uploadDate}</td>
+                                                    <td>{moment(assignment.uploadDate).format("YYYY-MM-DD")}</td>
                                                     <td>{assignment.dueDate}</td>
                                                     <td><a className="btn btn-secondary" href={`${BACKEND_API_URL}/assignments/getfile?path=${encodeURI(assignment.filePath)}`}>Download</a></td>
                                                     <td><button className="btn btn-warning" onClick={() => this.deleteAssignmentClicked(assignment.id)}>Delete</button></td>
@@ -143,7 +141,5 @@ class CourseDetailsComponent extends Component {
         }
     }
 }
-CourseDetailsComponent.propTypes = {
-    setMsg: PropTypes.func.isRequired
-}
-export default connect(null, { setMsg, clearMsg })(CourseDetailsComponent)
+
+export default CourseDetailsComponent

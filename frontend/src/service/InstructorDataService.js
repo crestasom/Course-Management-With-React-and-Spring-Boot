@@ -1,6 +1,6 @@
 import axios from "axios"
 import SuperService from "./SuperService";
-const BACKEND_API_URL = 'http://localhost:8085'
+const BACKEND_API_URL = process.env.REACT_APP_URL
 class InstructorDataService extends SuperService {
 
     saveInstructor(instructor) {
