@@ -52,6 +52,9 @@ class AppNavBar extends Component {
                                     <li className="nav-item">
                                         <Link to="/semester" className="nav-link">Semester</Link>
                                     </li>
+                                    <li className="nav-item">
+                                        <Link to="/student" className="nav-link">Students</Link>
+                                    </li>
                                 </>
 
                             ) : null}

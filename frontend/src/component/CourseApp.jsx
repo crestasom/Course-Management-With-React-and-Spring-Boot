@@ -23,6 +23,8 @@ import SemesterComponent from './semester/SemesterComponent'
 import ListSemesterComponent from './semester/ListSemesterComponent'
 import MapSemesterSubject from './semester/MapSemesterSubject'
 import NavBarDemo from './common/NavBarDemo'
+import ListStudentComponent from './student/ListStudentComponent'
+import StudentComponent from './student/StudentComponent'
 
 
 
@@ -40,7 +42,8 @@ class CourseApp extends Component {
                             <Switch>
                                 <Route path="/server-error" exact component={ErrorLanding} />
                                 <Route path="/" exact component={ListCoursesComponents} />
-
+                                <AdminRoute path="/student" exact component={ListStudentComponent} />
+                                <AdminRoute path="/student/add/:id" exact component={StudentComponent} />
                                 <AdminRoute path="/semester/add/:id" exact component={SemesterComponent} />
                                 <AdminRoute path="/semester" exact component={ListSemesterComponent} />
                                 <AdminRoute path="/semester/map/:id" exact component={MapSemesterSubject} />
