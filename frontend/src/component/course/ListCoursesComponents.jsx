@@ -120,7 +120,7 @@ class ListCoursesComponents extends Component {
                                     <tr key={course.id}>
                                         <td>{course.id}</td>
                                         <td>{course.description}</td>
-                                        <td>{course.instructor.name}</td>
+                                        {course.instructor ? <td> {course.instructor.name} </td> : <td style={{ color: "red" }}><b>Not Set</b></td>}
                                         {isAuthenticated ? (
                                             <>
                                                 <td><button className="btn btn-primary" onClick={() => this.props.history.push(`/course/view/${course.id}`)}>View</button></td>

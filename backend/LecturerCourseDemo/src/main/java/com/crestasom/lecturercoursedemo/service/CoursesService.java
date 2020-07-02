@@ -61,4 +61,14 @@ public class CoursesService {
 		repo.save(c);
 		return c;
 	}
+
+	public Course saveCourse(Course c) {
+		repo.save(c);
+		return c;
+	}
+
+	public List<Integer> searchCourses(String value) {
+		// TODO Auto-generated method stub
+		return repo.searchCoursesByDescription(value);
+	}
 }

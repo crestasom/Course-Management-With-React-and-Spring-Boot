@@ -44,6 +44,11 @@ public class CourseResource {
 	public List<Course> getAllCoursesInstr(@PathVariable String username) {
 		return courseManagementService.findCoursesByInstructorUserName(username);
 	}
+	
+	@GetMapping("/search/{value}")
+	public List<Integer> searchCourse(@PathVariable String value) {
+		return courseManagementService.searchCourses(value);
+	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable long id) {
@@ -66,6 +71,13 @@ public class CourseResource {
 	public ResponseEntity<Course> createCourse(@PathVariable String userName, @RequestBody Course course) {
 
 		Course createdCourse = courseManagementService.saveCourse(course, userName);
+		return new ResponseEntity<Course>(createdCourse, HttpStatus.OK);
+	}
+	
+	@PostMapping("/save")
+	public ResponseEntity<Course> createCourseWithOutInstructor( @RequestBody Course course) {
+
+		Course createdCourse = courseManagementService.saveCourse(course);
 		return new ResponseEntity<Course>(createdCourse, HttpStatus.OK);
 	}
 }

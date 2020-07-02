@@ -28,5 +28,8 @@ class CourseDataService extends SuperService {
     updateCourse(userName, id, course) {
         return this.requestWithHeader(axios.put, `${BACKEND_API_URL}/courses/update/${userName}`, course)
     }
+    searchCourse(value) {
+        return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/courses/search/${value}`)
+    }
 }
 export default new CourseDataService()

@@ -26,7 +26,7 @@ class CourseComponent extends Component {
             response => {
                 this.setState({
                     instructors: response.data,
-                    instructor: response.data[0].userName
+                    //  instructor: response.data[0].userName
                 })
             }
 
@@ -103,6 +103,7 @@ class CourseComponent extends Component {
                                     <fieldset>
                                         <label>Instructor</label>
                                         <Field component="select" className="form-control" name="instructor">
+                                            <option value="0">---</option>
                                             {instructors.map(i =>
                                                 <option key={i.id} value={i.userName}>{i.name}</option>
                                             )}
