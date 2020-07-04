@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,19 +16,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Instructor {
+@Table(name = "instructor")
+public class Lecturer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	@Column(name = "user_name")
-	private String userName;
 	@Column(name = "name")
 	private String name;
+	private String qualification;
+	@OneToOne
+	User user;
 
-	public Instructor(String userName, String name) {
-		super();
-		this.userName = userName;
+	public Lecturer(String username, String password, String email, String qualification, String name) {
+		setUser(new User(username, password, email, false, "ROLE_LECTURER"));
 		this.name = name;
+		this.qualification = qualification;
 	}
 
 }

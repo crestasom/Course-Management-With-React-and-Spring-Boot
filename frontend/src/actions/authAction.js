@@ -4,17 +4,15 @@ export const setAuth = () => dispatch => {
     let data = {}
     if (user) {
         data = {
-            isAdmin: user.admin,
+            role: user.role,
             isAuthenticated: true
         }
     } else {
         data = {
-            isAdmin: false,
+            role: "",
             isAuthenticated: false
         }
     }
-    console.log(data)
-
     dispatch(
         {
             type: SET_AUTH,

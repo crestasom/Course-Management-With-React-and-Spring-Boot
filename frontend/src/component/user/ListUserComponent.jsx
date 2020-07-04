@@ -76,9 +76,7 @@ class ListUserComponent extends Component {
                             <tr>
                                 <th>Id</th>
                                 <th>User Name</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,8 +85,10 @@ class ListUserComponent extends Component {
                                     <tr key={user.id}>
                                         <td>{user.id}</td>
                                         <td>{user.userName}</td>
-                                        <td><button className="btn btn-success" onClick={() => this.props.history.push(`/user/add/${user.id}`)}>Update</button></td>
-                                        <td><button className="btn btn-warning" onClick={() => this.deleteUserClicked(user.id)}>Delete</button></td>
+                                        <td>
+                                            <button className="btn btn-success" data-toggle="tooltip" title="Update User" onClick={() => this.props.history.push(`/instructor/add/${user.id}`)} style={{ marginRight: 4 }}><i className="far fa-edit" /></button>
+                                            <button className="btn btn-danger" data-toggle="tooltip" title="Delete User" onClick={() => this.deleteUserClicked(user.id)} style={{ marginRight: 4 }}><i className="fas fa-trash-alt" /></button>
+                                        </td>
                                     </tr>
                                 )
                             }

@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +28,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	@Autowired
 	UserService userDetailService;
 
+	private static Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -35,14 +39,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		String jwt = null;
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
 			jwt = authHeader.substring(7);
-			
+
 			userName = jUtil.extractUserName(jwt);
 		}
+		log.info(userName);
 		if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			User userDetails = userDetailService.findByUserName(userName);
-			if (userDetails!=null && jUtil.validateToken(jwt, userDetails)) {
+			log.info(userDetails.toString());
+			if (userDetails != null && jUtil.validateToken(jwt, userDetails)) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-						userDetails, null, new ArrayList<>());
+						userDetails, null, userDetails.getAuthorities());
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

@@ -9,17 +9,16 @@ import org.springframework.stereotype.Service;
 import com.crestasom.lecturercoursedemo.model.Course;
 import com.crestasom.lecturercoursedemo.model.Semester;
 import com.crestasom.lecturercoursedemo.repo.CourseRepo;
-import com.crestasom.lecturercoursedemo.repo.SemesterRepo;
 
 @Service
-public class CoursesService {
+public class CourseService {
 	@Autowired
 	CourseRepo repo;
 	@Autowired
 	SemesterService semService;
 
 	@Autowired
-	InstructorService iService;
+	LecturerService iService;
 
 	public void deleteById(long id) {
 		repo.deleteById(id);
@@ -47,8 +46,8 @@ public class CoursesService {
 
 	}
 
-	public List<Course> findCoursesByInstructorUserName(String userName) {
-		return repo.findByInstructorUserName(userName);
+	public List<Course> findCoursesByLecturerUserName(String userName) {
+		return repo.findByLecturerUserUsername(userName);
 
 	}
 
@@ -57,7 +56,7 @@ public class CoursesService {
 	}
 
 	public Course saveCourse(Course c, String userName) {
-		c.setInstructor(iService.findInstByUserName(userName));
+		c.setLecturer(iService.findInstByUserName(userName));
 		repo.save(c);
 		return c;
 	}

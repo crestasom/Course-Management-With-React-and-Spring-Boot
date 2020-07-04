@@ -6,7 +6,7 @@ class CourseDataService extends SuperService {
 
     retrieveAllCourses(userName) {
         if (userName === '' || userName === undefined) {
-            return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/courses`)
+            return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/get-all-courses`)
         }
         return this.requestWithHeader(axios.get, `${BACKEND_API_URL}/courses/list/${userName}`)
 

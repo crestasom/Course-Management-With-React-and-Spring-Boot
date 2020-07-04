@@ -14,7 +14,7 @@ public interface CourseRepo extends JpaRepository<Course, Long> {
 
 	void deleteById(Long id);
 
-	List<Course> findByInstructorUserName(String userName);
+	List<Course> findByLecturerUserUsername(String userName);
 
 	@Query(value = "select id from course where description like %:value%", nativeQuery = true)
 	List<Integer> searchCoursesByDescription(@PathVariable String value);

@@ -64,6 +64,7 @@ class ListInstructorComponent extends Component {
     render() {
         const { instructors } = this.state
         const { message, messageType } = this.state
+        let sn = 1
         return (
             <div className="container">
                 {message && (<Alert message={message} messageType={messageType} />)}
@@ -72,23 +73,24 @@ class ListInstructorComponent extends Component {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>S.N.</th>
                                 <th>Name</th>
-                                <th>UserName</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-
+                                <th>Username</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 instructors.map(instructor =>
                                     <tr key={instructor.id}>
-                                        <td>{instructor.id}</td>
+                                        <td>{sn++}</td>
                                         <td>{instructor.name}</td>
                                         <td>{instructor.userName}</td>
-                                        <td><button className="btn btn-success" onClick={() => this.props.history.push(`/instructor/add/${instructor.id}`)}>Update</button></td>
-                                        <td><button className="btn btn-warning" onClick={() => this.deleteInstructorClicked(instructor.id)}>Delete</button></td>
+                                        <td>
+                                            <button className="btn btn-success" data-toggle="tooltip" title="Update Instructor" onClick={() => this.props.history.push(`/instructor/add/${instructor.id}`)} style={{ marginRight: 4 }}><i className="far fa-edit" /></button>
+                                            <button className="btn btn-warning" data-toggle="tooltip" title="Delete Instructor" onClick={() => this.deleteInstructorClicked(instructor.id)} style={{ marginRight: 4 }}><i className="fas fa-trash-alt" /></button>
+                                        </td>
+
                                     </tr>
                                 )
                             }

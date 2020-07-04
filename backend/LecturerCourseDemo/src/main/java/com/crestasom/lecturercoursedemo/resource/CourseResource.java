@@ -1,6 +1,5 @@
 package com.crestasom.lecturercoursedemo.resource;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.crestasom.lecturercoursedemo.model.Course;
-import com.crestasom.lecturercoursedemo.model.Instructor;
-import com.crestasom.lecturercoursedemo.service.CoursesService;
-import com.crestasom.lecturercoursedemo.service.InstructorService;
+import com.crestasom.lecturercoursedemo.service.CourseService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
@@ -28,7 +23,7 @@ import com.crestasom.lecturercoursedemo.service.InstructorService;
 public class CourseResource {
 
 	@Autowired
-	private CoursesService courseManagementService;
+	private CourseService courseManagementService;
 
 	@GetMapping("")
 	public List<Course> getAllCourses() {
@@ -42,9 +37,9 @@ public class CourseResource {
 
 	@GetMapping("/list/{username}")
 	public List<Course> getAllCoursesInstr(@PathVariable String username) {
-		return courseManagementService.findCoursesByInstructorUserName(username);
+		return courseManagementService.findCoursesByLecturerUserName(username);
 	}
-	
+
 	@GetMapping("/search/{value}")
 	public List<Integer> searchCourse(@PathVariable String value) {
 		return courseManagementService.searchCourses(value);
@@ -73,9 +68,9 @@ public class CourseResource {
 		Course createdCourse = courseManagementService.saveCourse(course, userName);
 		return new ResponseEntity<Course>(createdCourse, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/save")
-	public ResponseEntity<Course> createCourseWithOutInstructor( @RequestBody Course course) {
+	public ResponseEntity<Course> createCourseWithOutInstructor(@RequestBody Course course) {
 
 		Course createdCourse = courseManagementService.saveCourse(course);
 		return new ResponseEntity<Course>(createdCourse, HttpStatus.OK);

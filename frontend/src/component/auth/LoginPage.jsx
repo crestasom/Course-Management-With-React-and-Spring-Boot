@@ -48,7 +48,18 @@ class LoginPage extends React.Component {
             UserDataService.checkLogin(username, password).then(res => {
                 localStorage.setItem("user", JSON.stringify(res.data))
                 this.props.setAuth()
-                this.props.history.push("/")
+                console.log(res.data.role)
+                console.log(res.data.role === "ROLE_ADMIN")
+                if (res.data.role === "ROLE_ADMIN") {
+                    console.log("Admin Login")
+                    this.props.history.push("/")
+                } else if (res.data.role === "ROLE_STUDENT") {
+                    console.log("Student Login")
+                    this.props.history.push("/student/index")
+                } else if (res.data.role === "ROLE_LECTURER") {
+                    console.log("Lecturer Login")
+                    this.props.history.push("/lecturer/index")
+                }
             }).catch((error) => {
                 this.setState({
                     message: error.response.data,

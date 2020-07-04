@@ -107,9 +107,7 @@ class ListCoursesComponents extends Component {
                                 <th>Description</th>
                                 <th>Instructor</th>
                                 {isAuthenticated ? (<>
-                                    <th>Veiw Details</th>
-                                    <th>Update</th>
-                                    <th>Delete</th>
+                                    <th>Actions</th>
                                 </>
                                 ) : null}
                             </tr>
@@ -120,12 +118,12 @@ class ListCoursesComponents extends Component {
                                     <tr key={course.id}>
                                         <td>{course.id}</td>
                                         <td>{course.description}</td>
-                                        {course.instructor ? <td> {course.instructor.name} </td> : <td style={{ color: "red" }}><b>Not Set</b></td>}
+                                        {course.lecturer ? <td> {course.lecturer.name} </td> : <td style={{ color: "red" }}><b>Not Set</b></td>}
                                         {isAuthenticated ? (
                                             <>
-                                                <td><button className="btn btn-primary btn-block" onClick={() => this.props.history.push(`/course/view/${course.id}`)}>View</button></td>
-                                                <td><button className="btn btn-success btn-block" onClick={() => this.props.history.push(`/course/add/${course.id}`)}>Update</button></td>
-                                                <td><button className="btn btn-warning btn-block" onClick={() => this.deleteCourseClicked(course.id)}>Delete</button></td>
+                                                <td><button className="btn btn-primary" data-toggle="tooltip" title="View Course Details" onClick={() => this.props.history.push(`/course/view/${course.id}`)} style={{ marginRight: 4 }}><i className="fas fa-info-circle" /></button>
+                                                    <button className="btn btn-success" data-toggle="tooltip" title="Update Course" onClick={() => this.props.history.push(`/course/add/${course.id}`)} style={{ marginRight: 4 }}><i className="far fa-edit" /></button>
+                                                    <button className="btn btn-warning" data-toggle="tooltip" title="Delete Course" onClick={() => this.deleteCourseClicked(course.id)} style={{ marginRight: 4 }}><i className="fas fa-trash-alt" /></button></td>
                                             </>
                                         ) : null}
 

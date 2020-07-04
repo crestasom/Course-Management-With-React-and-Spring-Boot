@@ -62,10 +62,7 @@ class ListSemesterComponent extends Component {
                                 <th>S.N.</th>
                                 <th>Name</th>
                                 <th>Semester Name</th>
-                                <th>Map Subject</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,9 +72,11 @@ class ListSemesterComponent extends Component {
                                         <td>{sn++}</td>
                                         <td>{semester.semester}</td>
                                         <td>{semester.semesterName}</td>
-                                        <td><button className="btn btn-primary" onClick={() => this.props.history.push(`/semester/map/${semester.id}`)}>Map</button></td>
-                                        <td><button className="btn btn-success" onClick={() => this.props.history.push(`/semester/add/${semester.id}`)}>Update</button></td>
-                                        <td><button className="btn btn-warning" onClick={() => this.deleteSemesterClicked(semester.id)}>Delete</button></td>
+                                        <td>
+                                            <button className="btn btn-primary" data-toggle="tooltip" title="Map Semester Subjects" onClick={() => this.props.history.push(`/semester/map/${semester.id}`)} style={{ marginRight: 4 }}><i className="fas fa-link" /></button>
+                                            <button className="btn btn-success" data-toggle="tooltip" title="Update Semester" onClick={() => this.props.history.push(`/instructor/add/${semester.id}`)} style={{ marginRight: 4 }}><i className="far fa-edit" /></button>
+                                            <button className="btn btn-warning" data-toggle="tooltip" title="Delete Semester" onClick={() => this.deleteSemesterClicked(semester.id)} style={{ marginRight: 4 }}><i className="fas fa-trash-alt" /></button>
+                                        </td>
                                     </tr>
                                 )
                             }

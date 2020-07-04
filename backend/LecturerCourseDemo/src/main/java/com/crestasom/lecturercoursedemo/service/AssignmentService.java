@@ -31,7 +31,7 @@ public class AssignmentService {
 	@Value("${app.upload.dir:${user.home}}")
 	public String uploadDir;
 	@Autowired
-	CoursesService cService;
+	CourseService cService;
 
 	@Autowired
 	FileStorageService fileService;

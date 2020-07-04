@@ -6,16 +6,16 @@ import PropTypes from 'prop-types'
 class AppNavBar extends Component {
     state = {
         isAuthenticated: false,
-        isAdmin: false,
+        role: "",
         tab: "Course"
     }
 
 
     static getDerivedStateFromProps(props, state) {
-        const { isAuthenticated, isAdmin, tab } = props
+        const { isAuthenticated, role, tab } = props
         return {
             isAuthenticated,
-            isAdmin,
+            role,
             tab
 
         }
@@ -23,7 +23,7 @@ class AppNavBar extends Component {
 
 
     render(props) {
-        const { isAuthenticated, isAdmin, tab } = this.state
+        const { isAuthenticated, role, tab } = this.state
         const username = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).username : ""
         return (
             <nav className="navbar navbar-expand-md navbar-dark bg-primary">
@@ -44,7 +44,7 @@ class AppNavBar extends Component {
                             <li className="nav-item">
                                 <Link to="/" className="nav-link">Dashboard</Link>
                             </li>
-                            {isAuthenticated ? (
+                            {role === "ROLE_ADMIN" ? (
                                 <>
                                     <li className="nav-item">
                                         <Link to="/instructors" className="nav-link">Instructors</Link>
@@ -55,24 +55,26 @@ class AppNavBar extends Component {
                                     <li className="nav-item">
                                         <Link to="/student" className="nav-link">Students</Link>
                                     </li>
+                                    <li className="nav-item">
+                                        <Link to="/users" className="nav-link">Users</Link>
+                                    </li>
                                 </>
-
-                            ) : null}
-                            {isAdmin ? (
-                                <li className="nav-item">
-                                    <Link to="/users" className="nav-link">Users</Link>
-                                </li>
 
                             ) : null}
                         </ul>
 
                         <ul className="navbar-nav ml-auto">
-                            {isAuthenticated ? (
+                            {role === "ROLE_ADMIN" ? (
                                 <>
-                                    <li className="nav-item"> <Link to={`/${tab}/add/-1`} className="nav-link">Hello {username}</Link></li>
+
                                     <li className="nav-item">
                                         <Link to={`/${tab}/add/-1`} className="nav-link">Add {tab}</Link>
                                     </li>
+                                </>
+                            ) : null}
+                            {isAuthenticated ? (
+                                <>
+                                    <li className="nav-item"> <Link to={`/${tab}/add/-1`} className="nav-link">Hello {username}</Link></li>
                                     <li className="nav-item">
                                         <Link to="/logout" className="nav-link">Logout</Link>
 
@@ -93,11 +95,11 @@ class AppNavBar extends Component {
 
 AppNavBar.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
+    role: PropTypes.string.isRequired,
 }
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
-    isAdmin: state.auth.isAdmin,
+    role: state.auth.role,
     tab: state.auth.tab
 })
 export default connect(mapStateToProps)(withRouter(AppNavBar))

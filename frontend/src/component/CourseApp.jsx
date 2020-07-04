@@ -25,6 +25,8 @@ import MapSemesterSubject from './semester/MapSemesterSubject'
 import NavBarDemo from './common/NavBarDemo'
 import ListStudentComponent from './student/ListStudentComponent'
 import StudentComponent from './student/StudentComponent'
+import StudentRoute from './common/StudentRoute'
+import StudentIndex from './student/StudentIndex'
 
 
 
@@ -42,6 +44,7 @@ class CourseApp extends Component {
                             <Switch>
                                 <Route path="/server-error" exact component={ErrorLanding} />
                                 <Route path="/" exact component={ListCoursesComponents} />
+                                <StudentRoute path="/student/index" exact component={StudentIndex} />
                                 <AdminRoute path="/student" exact component={ListStudentComponent} />
                                 <AdminRoute path="/student/add/:id" exact component={StudentComponent} />
                                 <AdminRoute path="/semester/add/:id" exact component={SemesterComponent} />
@@ -50,8 +53,8 @@ class CourseApp extends Component {
 
                                 <PrivateRoute path="/course/add/:id" component={CourseComponent} />
                                 <PrivateRoute path="/course/view/:id" component={CourseDetailsComponent} />
-                                <PrivateRoute path="/instructor/add/:id" component={InstructorComponent} />
-                                <PrivateRoute path="/instructors" component={ListInstructorComponent} />
+                                <PrivateRoute path="/lecturer/add/:id" component={InstructorComponent} />
+                                <PrivateRoute path="/lecturer" component={ListInstructorComponent} />
                                 <PrivateRoute path="/course/:cid/assignment/add/:id" component={AssignmentComponent} />
                                 <Route path='/login' exact component={LoginPage} />
                                 <Route path='/navbar-demo' exact component={NavBarDemo} />

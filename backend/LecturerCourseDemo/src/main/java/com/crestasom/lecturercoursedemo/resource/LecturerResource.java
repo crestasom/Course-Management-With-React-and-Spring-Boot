@@ -12,27 +12,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.crestasom.lecturercoursedemo.model.Course;
-import com.crestasom.lecturercoursedemo.model.Instructor;
-import com.crestasom.lecturercoursedemo.service.InstructorService;
+import com.crestasom.lecturercoursedemo.model.Lecturer;
+import com.crestasom.lecturercoursedemo.service.LecturerService;
 
 @RestController
-@RequestMapping("instructors")
-public class InstructorResource {
+@RequestMapping("lecturer")
+public class LecturerResource {
 
 	@Autowired
-	InstructorService iService;
+	LecturerService iService;
 
 	@GetMapping("")
-	public List<Instructor> getAllInstructors() {
-		return iService.getInstructors();
+	public List<Lecturer> getAllLecturers() {
+		return iService.getLecturers();
 	}
 
 	@PostMapping("/save")
-	public ResponseEntity<Instructor> save(@RequestBody Instructor instructor) {
+	public ResponseEntity<Lecturer> save(@RequestBody Lecturer instructor) {
 		
-		Instructor i = iService.save(instructor);
+		Lecturer i = iService.save(instructor);
 		if (i != null) {
 			return ResponseEntity.ok().body(i);
 		} else {
@@ -41,17 +39,17 @@ public class InstructorResource {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteInstructor(@PathVariable int id) {
+	public ResponseEntity<Void> deleteLecturer(@PathVariable int id) {
 		iService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/{username}")
-	public Instructor getInstructor(@PathVariable String username) {
+	public Lecturer getLecturer(@PathVariable String username) {
 		return iService.findInstByUserName(username);
 	}
 	@GetMapping("/id/{id}")
-	public Instructor getInstructorByID(@PathVariable int id) {
+	public Lecturer getLecturerByID(@PathVariable int id) {
 		return iService.findInstById(id);
 	}
 }

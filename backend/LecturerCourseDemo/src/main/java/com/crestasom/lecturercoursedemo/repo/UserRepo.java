@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.crestasom.lecturercoursedemo.model.User;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
-	Optional<User> findByUserName(String userName);
+	Optional<User> findByUsername(String userName);
 }

@@ -1,7 +1,7 @@
 import { SET_AUTH, CLEAR_AUTH, SET_TAB } from '../actions/type'
 const initialState = {
     isAuthenticated: false,
-    isAdmin: false,
+    role: "",
     tab: "Course"
 }
 export default function (state = initialState, action) {
@@ -10,13 +10,13 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 isAuthenticated: action.payload.isAuthenticated,
-                isAdmin: action.payload.isAdmin
+                role: action.payload.role
             }
         case CLEAR_AUTH:
             return {
                 ...state,
                 isAuthenticated: false,
-                isAdmin: false,
+                role: "",
             }
         case SET_TAB:
             return {
